@@ -19,7 +19,7 @@ export default function VoidRoom({ params }: Props) {
 
     return (
         <>
-            <header className={`${montserrat.className} sticky left-0 top-0 font-semibold text-center p-4 shadow-lg backdrop-blur`}>
+            <header className={`${montserrat.className} sticky left-0 top-0 font-semibold text-center p-4 shadow-lg bg-darkBg rounded-b-xl z-10`}>
                 <h1>Void Room {voidId}</h1>
             </header>
 

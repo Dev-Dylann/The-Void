@@ -5,24 +5,13 @@ import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
 
 type Props = {
     scrollFn: () => void,
-    bottomRef: React.RefObject<HTMLDivElement>
+    atBottom: boolean
 }
 
-const ToBottom = ({ scrollFn, bottomRef }: Props) => {
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-            setIsVisible(scrollTop > 200);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-    }, [])
+const ToBottom = ({ scrollFn, atBottom }: Props) => {
 
     return (
-        <button onClick={scrollFn} className='z-[99] fixed right-6 bottom-16 bg-white text-darkBg rounded-lg w-fit p-2 invisible transition-all hover:brightness-90 shadow-lg' style={isVisible ? { visibility: 'visible' } : {}}><ChevronDoubleDownIcon className='h-4 w-4' /></button>
+        <button onClick={scrollFn} className='z-[99] fixed right-5 bottom-16 bg-white text-darkBg rounded-lg w-fit p-2 invisible transition-all hover:brightness-90 shadow-lg' style={!atBottom ? { visibility: 'visible' } : {}}><ChevronDoubleDownIcon className='h-4 w-4' /></button>
     )
 }
 

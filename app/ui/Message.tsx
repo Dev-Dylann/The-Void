@@ -18,7 +18,7 @@ export default function Message({ message, replied, setReplying }: Props) {
     }
 
     return (
-        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40'>
+        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur'>
             {replied && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded-lg line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
