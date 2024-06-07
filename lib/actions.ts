@@ -26,3 +26,14 @@ export async function fetchVoidName(voidId: string) {
 
     return { data }
 }
+
+export async function fetchMessages(voidId: string) {
+    const { data, error } = await supabase
+        .from('messages')
+        .select()
+        .eq('void_id', voidId)
+
+    if (error) throw new Error(error.message)
+
+    return { messages: data }
+}

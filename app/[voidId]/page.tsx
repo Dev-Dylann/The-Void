@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next"
 import { montserrat } from "../ui/fonts"
-import { fetchVoidName } from "@/lib/actions"
+import { fetchMessages, fetchVoidName } from "@/lib/actions"
 import ChatBody from "./components/ChatBody"
 import { notFound } from "next/navigation"
 
@@ -33,6 +33,8 @@ export default async function VoidRoom({ params }: Props) {
     const { data } = await fetchVoidName(voidId)
     const voidName = data[0]?.void_name
 
+    const { messages } = await fetchMessages(voidId)
+
     return (
         <>
             <header className={`${montserrat.className} sticky left-0 top-0 font-semibold text-center p-4 shadow-lg bg-darkBg rounded-b-xl z-10`}>
@@ -40,7 +42,7 @@ export default async function VoidRoom({ params }: Props) {
             </header>
 
             <main className='grow flex flex-col bg-black/65'>
-                <ChatBody />
+                <ChatBody messagesArray={messages} />
             </main>
         </>
     )

@@ -1,14 +1,20 @@
 import { useRef, useEffect, useState } from 'react'
 
-import testMessages from "./testMessages"
 import Message from "@/app/ui/Message"
 import ToBottom from "@/app/components/ToBottom"
 
 type Props = {
-    setReplying: React.Dispatch<React.SetStateAction<number | undefined>>
+    setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
+    messages: {
+        id: number;
+        message: string;
+        replied: string | null;
+        sent_at: string;
+        void_id: string;
+    }[]
 }
 
-export default function MessageArea({ setReplying }: Props) {
+export default function MessageArea({ setReplying, messages }: Props) {
     const [atBottom, setAtBottom] = useState(false)
 
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -20,7 +26,7 @@ export default function MessageArea({ setReplying }: Props) {
 
     useEffect(() => {
         scrollToBottom()
-    }, [testMessages])
+    }, [messages])
 
     useEffect(() => {
         const container = containerRef.current
@@ -41,18 +47,18 @@ export default function MessageArea({ setReplying }: Props) {
     }, [])
 
     return (
-        <section ref={containerRef} className='px-5 pt-1 flex flex-col h-screen overflow-y-scroll'>
-            {!testMessages.length && (
+        <section ref={containerRef} className='px-5 pt-1 flex flex-col h-fit grow overflow-y-scroll'>
+            {!messages.length && (
                 <article className='text-center my-auto flex flex-col gap-2'>
                     <p className='font-semibold'>No messages in this void yet</p>
                     <p className='text-xs text-gray-400'>Be the first to send a message</p>
                 </article>
             )}
 
-            {testMessages.length && (
-                testMessages.map((message) => {
-                    const replied = testMessages.find(reply => {
-                        return reply.id === message.replied
+            {messages.length && (
+                messages.map((message) => {
+                    const replied = messages.find(reply => {
+                        return reply.id.toString() === message.replied
                     })
 
                     return (

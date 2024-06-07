@@ -1,11 +1,22 @@
 import Link from "next/link"
-import { headers } from 'next/headers'
-import { MessageType } from "../[voidId]/components/testMessages"
 import { inter } from "./fonts"
+import formatDate from "@/lib/formatDate"
 
 type Props = {
-    message: MessageType,
-    replied?: MessageType,
+    message: {
+        id: number;
+        message: string;
+        replied: string | null;
+        sent_at: string;
+        void_id: string;
+    },
+    replied?: {
+        id: number;
+        message: string;
+        replied: string | null;
+        sent_at: string;
+        void_id: string;
+    },
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
 }
 
@@ -17,6 +28,8 @@ export default function Message({ message, replied, setReplying }: Props) {
         input?.focus()
     }
 
+    const datetime = formatDate(message.sent_at)
+
     return (
         <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur'>
             {replied && (
@@ -25,7 +38,7 @@ export default function Message({ message, replied, setReplying }: Props) {
                 </Link>
             )}
             <pre className={`${inter.className} text-sm text-wrap`}>{message.message}</pre>
-            <span className='text-[10px] text-gray-400'>{message.datetime}</span>
+            <span className='text-[10px] text-gray-400'>{datetime}</span>
         </div>
     )
 }
