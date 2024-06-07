@@ -1,9 +1,11 @@
-import Image from "next/image"
 import { astro, inter, montserrat } from "./ui/fonts"
-import mobileBg from '/public/mobile-bg.jpg'
 import VoidSelection from './components/VoidSelection'
+import { ToastContainer, Zoom } from "react-toastify"
+
+import 'react-toastify/ReactToastify.css'
 
 export default function Home() {
+
   return (
     <main className='relative'>
 
@@ -17,6 +19,16 @@ export default function Home() {
 
         <VoidSelection />
       </section>
+
+      <ToastContainer
+        autoClose={2500}
+        position="top-center"
+        hideProgressBar={true}
+        limit={3}
+        theme="dark"
+        transition={Zoom}
+        newestOnTop={false}
+      />
     </main>
   )
 }

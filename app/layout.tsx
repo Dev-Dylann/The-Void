@@ -1,13 +1,20 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { inter } from "./ui/fonts";
 import Image from 'next/image'
 import mobileBg from '../public/mobile-bg.jpg'
 
 export const metadata: Metadata = {
-  title: "The Void",
+  title: {
+    default: 'The Void',
+    template: '%s | The Void'
+  },
   description: "Create anonymous chatrooms for you andd your friends!",
 };
+
+export const viewport: Viewport = {
+  themeColor: '#101720',
+}
 
 export default function RootLayout({
   children,
