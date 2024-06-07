@@ -13,16 +13,7 @@ export async function createVoid(formData: FormData) {
 
     if (error) throw new Error(error.message)
 
-    const err = await createChatTable(id)
-    if (err) throw new Error(err.message)
-
     redirect(`/${id}`)
-}
-
-async function createChatTable(voidId: string) {
-    const { error } = await supabase.rpc('create_table', { table_name: `${voidId}` })
-
-    return error
 }
 
 export async function fetchVoidName(voidId: string) {
@@ -34,10 +25,4 @@ export async function fetchVoidName(voidId: string) {
     if (error) throw new Error(error.message)
 
     return { data }
-}
-
-export async function fetchVoidMessages(voidId: string) {
-    const { data, error } = await supabase
-        .from(voidId)
-        .select()
 }

@@ -6,47 +6,41 @@ export type Json =
     | { [key: string]: Json | undefined }
     | Json[]
 
-export interface Database {
+export type Database = {
     public: {
         Tables: {
-            [index: string]: {
+            messages: {
                 Row: {
-                    created_at: string
                     id: number
                     message: string
                     replied: string | null
+                    sent_at: string
+                    void_id: string
                 }
                 Insert: {
-                    created_at?: string
-                    id?: never
-                    message: string
-                    replied?: string | null
-                }
-                Update: {
-                    created_at?: string
-                    id?: never
+                    id?: number
                     message?: string
                     replied?: string | null
-                }
-                Relationships: []
-            } | {
-                Row: {
-                    created_at: string
-                    id: string
-                    void_name: string
-                }
-                Insert: {
-                    created_at?: string
-                    id: string
-                    void_name?: string
+                    sent_at?: string
+                    void_id?: string
                 }
                 Update: {
-                    created_at?: string
-                    id?: string
-                    void_name?: string
+                    id?: number
+                    message?: string
+                    replied?: string | null
+                    sent_at?: string
+                    void_id?: string
                 }
-                Relationships: []
-            },
+                Relationships: [
+                    {
+                        foreignKeyName: "messages_void_id_fkey"
+                        columns: ["void_id"]
+                        isOneToOne: false
+                        referencedRelation: "void_rooms"
+                        referencedColumns: ["id"]
+                    },
+                ]
+            }
             void_rooms: {
                 Row: {
                     created_at: string
