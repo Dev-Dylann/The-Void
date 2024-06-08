@@ -66,7 +66,7 @@ export default function MessageInput({ replying, setReplying, messages }: Props)
                 <label htmlFor="message" className='absolute -left-[999px]'>
                     Type your message here
                 </label>
-                <input type="text" name="message" id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 px-4 outline outline-2 focus:outline-white -outline-offset-2 grow' />
+                <textarea name="message" rows={1} id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 h-fit self-center px-4 outline outline-2 focus:outline-white -outline-offset-2 grow' />
 
                 <SendButton message={message} setMessage={setMessage} setReplying={setReplying} />
             </form>
