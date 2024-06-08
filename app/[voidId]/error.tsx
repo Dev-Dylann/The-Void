@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
                 <h1>Error</h1>
             </header>
 
-            <main className='grow p-5 flex bg-black/65 items-center justify-center gap-4 text-center'>
+            <main className='grow p-5 flex flex-col bg-black/65 items-center justify-center gap-4 text-center'>
                 <FaceFrownIcon className='h-16 w-16' />
                 <h2 className={`${montserrat.className} text-2xl font-semibold`}>Couldn't fetch messages!</h2>
 

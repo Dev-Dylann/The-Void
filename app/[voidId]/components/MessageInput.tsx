@@ -1,26 +1,44 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useParams } from "next/navigation"
+import { inputNewMessage } from "@/lib/actions"
 import { inter } from "@/app/ui/fonts"
-import { PaperAirplaneIcon, XMarkIcon, PhotoIcon } from "@heroicons/react/24/outline"
-import testMessages from "./testMessages"
+import { XMarkIcon, PhotoIcon } from "@heroicons/react/24/outline"
+import SendButton from "./SendButton"
 
 type Props = {
     replying: number | undefined,
-    setReplying: React.Dispatch<React.SetStateAction<number | undefined>>
+    setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
+    messages: {
+        id: number;
+        message: string;
+        replied: string | null;
+        sent_at: string;
+        void_id: string;
+    }[]
 }
 
-export default function MessageInput({ replying, setReplying }: Props) {
+export default function MessageInput({ replying, setReplying, messages }: Props) {
 
     const [message, setMessage] = useState('')
 
-    const replied = testMessages.find(message => {
+    const replied = messages.find(message => {
         return message.id === replying
     })
 
+    const { voidId } = useParams()
+
+    const newMessageArgs = {
+        voidId: voidId as string,
+        replied: replied?.id.toString()
+    }
+
+    const inputNewMessagewithArgs = inputNewMessage.bind(null, newMessageArgs)
+
     return (
         <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full p-2 flex gap-2'>
-            <form className="grid grid-cols-[1fr_28px] w-full gap-2">
+            <form action={inputNewMessagewithArgs} className="grid grid-cols-[1fr_28px] w-full gap-2">
                 {replying && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
                         <button onClick={() => setReplying(undefined)}>
@@ -35,9 +53,7 @@ export default function MessageInput({ replying, setReplying }: Props) {
                 </label>
                 <input type="text" name="message" id="message" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 px-4 outline outline-2 focus:outline-white -outline-offset-2 grow' />
 
-                <button className='p-2 rounded-lg text-darkBg bg-white w-fit'>
-                    <PaperAirplaneIcon className='h-5 w-5' />
-                </button>
+                <SendButton message={message} setMessage={setMessage} />
             </form>
 
             {!message && (

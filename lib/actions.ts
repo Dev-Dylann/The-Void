@@ -3,6 +3,7 @@
 import supabase from './supabase'
 import { nanoid } from 'nanoid'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 export async function createVoid(formData: FormData) {
 
@@ -36,4 +37,21 @@ export async function fetchMessages(voidId: string) {
     if (error) throw new Error(error.message)
 
     return { messages: data }
+}
+
+type newMessageArgs = {
+    voidId: string,
+    replied?: string
+}
+
+export async function inputNewMessage({ voidId, replied }: newMessageArgs, formData: FormData) {
+    const message = formData.get('message')?.toString().trim()
+
+    const { error } = await supabase
+        .from('messages')
+        .insert({
+            message: message, void_id: voidId, replied: replied
+        })
+
+    revalidatePath(`/${voidId}`)
 }
