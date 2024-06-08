@@ -33,11 +33,6 @@ export default async function VoidRoom({ params }: Props) {
 
     const { voidId } = params
 
-    /* const { data } = await fetchVoidName(voidId)
-    const voidName = data[0]?.void_name
-
-    const { messages } = await fetchMessages(voidId) */
-
     const voidData = fetchVoidName(voidId)
     const messagesData = fetchMessages(voidId)
 
@@ -54,7 +49,7 @@ export default async function VoidRoom({ params }: Props) {
                 <ShareIcon className='h-5 w-5' />
             </header>
 
-            <main className='grow flex flex-col bg-black/65'>
+            <main className='grow flex flex-col bg-black/65 h-full'>
                 <ChatBody messagesArray={messages.messages} />
             </main>
         </>

@@ -69,7 +69,7 @@ export default function MessageArea({ setReplying, messages }: Props) {
                 })
             )}
 
-            <div ref={bottomRef}></div>
+            <div ref={bottomRef} className='border'></div>
 
             <ToBottom scrollFn={scrollToBottom} atBottom={atBottom} />
         </section>
