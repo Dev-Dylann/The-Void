@@ -49,7 +49,7 @@ export default async function VoidRoom({ params }: Props) {
                 <ShareIcon className='h-5 w-5' />
             </header>
 
-            <main className='grow flex flex-col bg-black/65 h-full'>
+            <main className='grow flex flex-col bg-black/65 h-screen prevent-select'>
                 <ChatBody messagesArray={messages.messages} />
             </main>
         </>

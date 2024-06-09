@@ -22,7 +22,12 @@ export function subscribeToChanges(channel: RealtimeChannel, voidId: string, set
         { event: '*', schema: 'public', table: 'messages', filter: `void_id=eq.${voidId}` },
         (payload) => {
             console.log('Change received!', payload)
-            setMessages(prev => prev.concat([payload.new as message]))
+            setMessages(prev => {
+                const old = [...prev]
+                old.push(payload.new as message)
+
+                return old
+            })
         }
     )
         .subscribe()
