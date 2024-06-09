@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 
 import Message from "@/app/ui/Message"
+import Hammer from 'hammerjs'
 import ToBottom from "@/app/components/ToBottom"
 
 type Props = {
@@ -22,6 +23,12 @@ export default function MessageArea({ setReplying, messages }: Props) {
 
     const scrollToBottom = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    const replyActive = (id: number) => {
+        const input = document.querySelector<HTMLInputElement>('#message')
+        setReplying(id)
+        input?.focus()
     }
 
     useEffect(() => {
@@ -46,8 +53,36 @@ export default function MessageArea({ setReplying, messages }: Props) {
         }
     }, [])
 
+    useEffect(() => {
+        const hammer = new Hammer(containerRef.current as HTMLElement)
+
+        let currentMessage: HTMLElement
+
+        hammer.on('panright', (event) => {
+            currentMessage = event.target.closest('.message')!
+            if (currentMessage) {
+                currentMessage.style.transform = `translateX(${event.deltaX})`
+            }
+        })
+
+        hammer.on('panend', (event) => {
+            if (currentMessage) {
+                if (event.deltaX > 100) {
+                    navigator.vibrate(500)
+                    replyActive(Number(currentMessage.id))
+                } else {
+                    currentMessage.style.transform = `translateX(0)`
+                }
+            }
+        })
+
+        return () => {
+            hammer.destroy()
+        }
+    }, [])
+
     return (
-        <section ref={containerRef} className='px-5 pt-1 flex flex-col h-fit grow overflow-y-scroll'>
+        <section ref={containerRef} className='border border-red-700 px-5 pt-1 flex flex-col h-fit grow overflow-y-scroll'>
             {!messages.length && (
                 <article className='text-center my-auto flex flex-col gap-2'>
                     <p className='font-semibold'>No messages in this void yet</p>
