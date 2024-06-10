@@ -65,6 +65,10 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                     <PhotoIcon className='h-5 w-5' />
                 </button>
             )}
+
+            {state.status.includes('Failed') && message && (
+                <span className='text-red-600 italic absolute bottom-1 left-5 text-[8px]'>Failed to send message!</span>
+            )}
         </section>
     )
 }
