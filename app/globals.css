@@ -22,3 +22,7 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
 }
+
+.loader {
+  background: conic-gradient(transparent, #101720);
+}

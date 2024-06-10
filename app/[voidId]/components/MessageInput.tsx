@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useFormState } from "react-dom"
 import { useParams } from "next/navigation"
 import { inputNewMessage } from "@/lib/actions"
 import { inter } from "@/app/ui/fonts"
@@ -19,22 +20,27 @@ type Props = {
     }
 }
 
+const initState = {
+    status: ""
+}
+
 export default function MessageInput({ replying, setReplying, replied }: Props) {
 
     const [message, setMessage] = useState('')
 
     const { voidId } = useParams()
 
-    const newMessageArgs = {
+    /* const newMessageArgs = {
         voidId: voidId as string,
         replied: replied?.id.toString()
     }
 
-    const inputNewMessagewithArgs = inputNewMessage.bind(null, newMessageArgs)
+    const inputNewMessagewithArgs = inputNewMessage.bind(null, newMessageArgs) */
+    const [state, formAction] = useFormState(inputNewMessage, initState)
 
     return (
         <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
-            <form action={inputNewMessagewithArgs} className="grid grid-cols-[1fr_auto] w-full gap-2">
+            <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
                         <button type="button" onClick={() => setReplying(undefined)}>
@@ -48,8 +54,10 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                     Type your message here
                 </label>
                 <textarea name="message" rows={1} id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 h-fit self-center px-4 outline outline-2 focus:outline-white -outline-offset-2 grow resize-none' />
+                <input type="hidden" name="voidId" value={voidId} />
+                <input type="hidden" name="replied" value={replied?.id.toString()} />
 
-                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} />
+                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state.status} />
             </form>
 
             {!message && (

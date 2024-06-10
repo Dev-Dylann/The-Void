@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { subscribeToChanges } from '@/lib/SubscribeRealtime'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
+import notify from '@/app/ui/toast'
 
 type Message = {
     id: number;
@@ -29,10 +30,6 @@ export default function ChatBody({ messagesArray }: Props) {
     const voidChannel = supabase.channel(voidId as string)
 
     const data = subscribeToChanges(voidChannel, voidId as string, setMessages)
-
-    useEffect(() => {
-        console.log(messages)
-    }, [messages])
 
     useEffect(() => {
         const repliedMessage = messages.find(message => {

@@ -39,13 +39,15 @@ export async function fetchMessages(voidId: string) {
     return { messages: data }
 }
 
-type newMessageArgs = {
+/* type newMessageArgs = {
     voidId: string,
     replied?: string
-}
+} */
 
-export async function inputNewMessage({ voidId, replied }: newMessageArgs, formData: FormData) {
+export async function inputNewMessage(prevState: { status: string }, formData: FormData) {
     const message = formData.get('message')?.toString().trim()
+    const voidId = formData.get('voidId')?.toString()
+    const replied = formData.get('replied')?.toString()
 
     const { error } = await supabase
         .from('messages')
@@ -53,5 +55,10 @@ export async function inputNewMessage({ voidId, replied }: newMessageArgs, formD
             message: message, void_id: voidId, replied: replied
         })
 
+    if (error) {
+        return { status: 'Failed to send message' }
+    }
+
     revalidatePath(`/${voidId}`)
+    return { status: 'Message sent successfully' }
 }
