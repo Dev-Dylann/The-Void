@@ -26,6 +26,7 @@ export default function Message({ message, replied, setReplying }: Props) {
         const input = document.querySelector<HTMLInputElement>('#message')
         setReplying(id)
         input?.focus()
+        console.log(replied)
     }
 
     const datetime = formatDate(message.sent_at)
@@ -37,7 +38,7 @@ export default function Message({ message, replied, setReplying }: Props) {
                     <pre className={`${inter.className} p-2 border rounded-lg line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
                 </Link>
             )}
-            <pre className={`${inter.className} text-sm text-wrap`}>{message.message}</pre>
+            <pre className={`${inter.className} text-xs text-wrap`}>{message.message}</pre>
             <span className='text-[10px] text-gray-400'>{datetime}</span>
         </div>
     )

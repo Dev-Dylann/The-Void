@@ -10,37 +10,18 @@ import SendButton from "./SendButton"
 type Props = {
     replying: number | undefined,
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
-    messages: {
+    replied?: {
         id: number;
         message: string;
         replied: string | null;
         sent_at: string;
         void_id: string;
-    }[]
+    }
 }
 
-export default function MessageInput({ replying, setReplying, messages }: Props) {
+export default function MessageInput({ replying, setReplying, replied }: Props) {
 
     const [message, setMessage] = useState('')
-    const [replied, setReplied] = useState<{
-        id: number;
-        message: string;
-        replied: string | null;
-        sent_at: string;
-        void_id: string;
-    }>()
-
-
-    useEffect(() => {
-        const replied = messages.find(message => {
-            return message.id === replying
-        })
-
-        setReplied(replied)
-
-        console.log(replying)
-        console.log(replied)
-    }, [replying])
 
     const { voidId } = useParams()
 

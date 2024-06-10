@@ -7,19 +7,22 @@ import { subscribeToChanges } from '@/lib/SubscribeRealtime'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
 
+type Message = {
+    id: number;
+    message: string;
+    replied: string | null;
+    sent_at: string;
+    void_id: string;
+}
+
 type Props = {
-    messagesArray: {
-        id: number;
-        message: string;
-        replied: string | null;
-        sent_at: string;
-        void_id: string;
-    }[]
+    messagesArray: Message[]
 }
 
 export default function ChatBody({ messagesArray }: Props) {
     const [replying, setReplying] = useState<number | undefined>(undefined)
     const [messages, setMessages] = useState(messagesArray)
+    const [replied, setReplied] = useState<Message>()
 
     const { voidId } = useParams()
 
@@ -31,11 +34,19 @@ export default function ChatBody({ messagesArray }: Props) {
         console.log(messages)
     }, [messages])
 
+    useEffect(() => {
+        const repliedMessage = messages.find(message => {
+            return message.id === replying
+        })
+
+        setReplied(repliedMessage)
+    }, [replying, messages])
+
     return (
         <>
             <MessageArea setReplying={setReplying} messages={messages} />
 
-            <MessageInput replying={replying} setReplying={setReplying} messages={messagesArray} />
+            <MessageInput replying={replying} setReplying={setReplying} replied={replied} />
         </>
     )
 }
