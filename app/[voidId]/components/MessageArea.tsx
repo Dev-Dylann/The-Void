@@ -25,12 +25,6 @@ export default function MessageArea({ setReplying, messages }: Props) {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
-    const replyActive = (id: number) => {
-        const input = document.querySelector<HTMLInputElement>('#message')
-        setReplying(id)
-        input?.focus()
-    }
-
     useEffect(() => {
         scrollToBottom()
         console.log(messages)
@@ -55,6 +49,12 @@ export default function MessageArea({ setReplying, messages }: Props) {
     }, [])
 
     useEffect(() => {
+        const replyActive = (id: number) => {
+            const input = document.querySelector<HTMLInputElement>('#message')
+            setReplying(id)
+            input?.focus()
+        }
+
         if (typeof window !== 'undefined') {
             const hammer = new Hammer(containerRef.current as HTMLElement)
 
@@ -82,7 +82,7 @@ export default function MessageArea({ setReplying, messages }: Props) {
                 hammer.destroy()
             }
         }
-    }, [])
+    }, [setReplying])
 
     return (
         <section ref={containerRef} className='px-5 pt-1 flex flex-col h-fit grow overflow-y-scroll'>

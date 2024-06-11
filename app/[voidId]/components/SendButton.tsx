@@ -30,7 +30,7 @@ export default function SendButton({ message, setMessage, setReplying, formStatu
                 notify(formStatus, 'error')
             }
         }
-    }, [pending, formStatus])
+    }, [pending, formStatus, setMessage, setReplying])
 
     useEffect(() => {
         console.log(formStatus)

@@ -17,7 +17,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
 
             <main className='grow p-5 flex flex-col bg-black/65 items-center justify-center gap-4 text-center'>
                 <FaceFrownIcon className='h-16 w-16' />
-                <h2 className={`${montserrat.className} text-2xl font-semibold`}>Couldn't fetch messages!</h2>
+                <h2 className={`${montserrat.className} text-2xl font-semibold`}>Couldn&apos;t fetch messages!</h2>
 
                 <button onClick={() => reset()} className='mt-2 border rounded-lg font-semibold px-4 py-2 hover:bg-white hover:text-darkBg'>Try Again</button>
             </main>

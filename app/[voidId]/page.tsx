@@ -5,7 +5,8 @@ import ChatBody from "./components/ChatBody"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 
-import { ArrowLeftIcon, ShareIcon } from "@heroicons/react/24/outline"
+import { ArrowLeftIcon } from "@heroicons/react/24/outline"
+import ShareButton from "../components/ShareButton"
 
 type Props = {
     params: {
@@ -46,9 +47,7 @@ export default async function VoidRoom({ params }: Props) {
                     <ArrowLeftIcon className='h-5 w-5' />
                 </Link>
                 <h1>{voidName}</h1>
-                <button className='p-2 rounded-lg'>
-                    <ShareIcon className='h-5 w-5' />
-                </button>
+                <ShareButton voidName={voidName} />
             </header>
 
             <main className='grow flex flex-col bg-black/65 h-screen prevent-select'>
