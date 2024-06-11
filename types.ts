@@ -12,6 +12,8 @@ export type Database = {
             messages: {
                 Row: {
                     id: number
+                    is_media: boolean
+                    media_src: string | null
                     message: string
                     replied: string | null
                     sent_at: string
@@ -19,6 +21,8 @@ export type Database = {
                 }
                 Insert: {
                     id?: number
+                    is_media?: boolean
+                    media_src?: string | null
                     message?: string
                     replied?: string | null
                     sent_at?: string
@@ -26,6 +30,8 @@ export type Database = {
                 }
                 Update: {
                     id?: number
+                    is_media?: boolean
+                    media_src?: string | null
                     message?: string
                     replied?: string | null
                     sent_at?: string
