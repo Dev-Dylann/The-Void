@@ -7,6 +7,8 @@ type message = {
     replied: string | null;
     sent_at: string;
     void_id: string;
+    is_media: boolean;
+    media_src: string | null;
 }
 
 export function subscribeToChanges(channel: RealtimeChannel, voidId: string, setMessages: React.Dispatch<React.SetStateAction<{
@@ -15,6 +17,8 @@ export function subscribeToChanges(channel: RealtimeChannel, voidId: string, set
     replied: string | null;
     sent_at: string;
     void_id: string;
+    is_media: boolean;
+    media_src: string | null;
 }[]>>) {
 
     const listener = channel.on(

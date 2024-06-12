@@ -14,6 +14,8 @@ type Message = {
     replied: string | null;
     sent_at: string;
     void_id: string;
+    is_media: boolean;
+    media_src: string | null;
 }
 
 type Props = {
