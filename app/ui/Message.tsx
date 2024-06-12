@@ -35,6 +35,7 @@ export default function Message({ message, replied, setReplying }: Props) {
     }
 
     const datetime = formatDate(message.sent_at)
+    const repliedMedia = replied?.media as any
 
     return (
         <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
@@ -47,7 +48,7 @@ export default function Message({ message, replied, setReplying }: Props) {
             {replied && replied.is_media && (
                 <Link href={`#${replied.id}`} className='text-xs flex items-center gap-2 p-2 border rounded'>
                     <PhotoIcon className='h-5 w-5' />
-                    Image
+                    {repliedMedia.type.includes('image') ? "Image" : "Video"}
                 </Link>
             )}
 
