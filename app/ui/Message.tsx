@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { inter } from "./fonts"
 import formatDate from "@/lib/formatDate"
+import Image from "next/image";
 
 type Props = {
     message: {
@@ -42,7 +43,18 @@ export default function Message({ message, replied, setReplying }: Props) {
                     <pre className={`${inter.className} p-2 border rounded-lg line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
                 </Link>
             )}
-            <pre className={`${inter.className} text-xs text-wrap`}>{message.message}</pre>
+
+            {message.is_media ? (
+                <Image
+                    src=''
+                    alt=''
+                >
+
+                </Image>
+            ) : (
+                <pre className={`${inter.className} text-xs text-wrap`}>{message.message}</pre>
+            )}
+
             <span className='text-[10px] text-gray-400'>{datetime}</span>
         </div>
     )
