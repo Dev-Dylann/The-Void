@@ -9,6 +9,7 @@ import { inter } from "@/app/ui/fonts"
 import { XMarkIcon, PhotoIcon, ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline"
 import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
+import { Json } from "@/types"
 
 type Props = {
     replying: number | undefined,
@@ -20,7 +21,7 @@ type Props = {
         sent_at: string;
         void_id: string;
         is_media: boolean;
-        media_src: string | null;
+        media: Json | null;
     }
 }
 

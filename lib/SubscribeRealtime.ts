@@ -1,3 +1,4 @@
+import { Json } from "@/types";
 import supabase from "./supabase"
 import { RealtimeChannel } from "@supabase/supabase-js"
 
@@ -8,7 +9,7 @@ type message = {
     sent_at: string;
     void_id: string;
     is_media: boolean;
-    media_src: string | null;
+    media: Json | null;
 }
 
 export function subscribeToChanges(channel: RealtimeChannel, voidId: string, setMessages: React.Dispatch<React.SetStateAction<{
@@ -18,7 +19,7 @@ export function subscribeToChanges(channel: RealtimeChannel, voidId: string, set
     sent_at: string;
     void_id: string;
     is_media: boolean;
-    media_src: string | null;
+    media: Json | null;
 }[]>>) {
 
     const listener = channel.on(

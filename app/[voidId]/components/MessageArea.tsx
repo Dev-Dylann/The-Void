@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react'
 import Message from "@/app/ui/Message"
 import Hammer from 'hammerjs'
 import ToBottom from "@/app/components/ToBottom"
+import { Json } from '@/types'
 
 type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
@@ -13,7 +14,7 @@ type Props = {
         sent_at: string;
         void_id: string;
         is_media: boolean;
-        media_src: string | null;
+        media: Json | null;
     }[]
 }
 

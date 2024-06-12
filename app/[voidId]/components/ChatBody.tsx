@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation'
 import { subscribeToChanges } from '@/lib/SubscribeRealtime'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
+import { Json } from '@/types'
 import notify from '@/app/ui/toast'
 
 type Message = {
@@ -15,7 +16,7 @@ type Message = {
     sent_at: string;
     void_id: string;
     is_media: boolean;
-    media_src: string | null;
+    media: Json | null;
 }
 
 type Props = {

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { inter } from "./fonts"
 import formatDate from "@/lib/formatDate"
 import Image from "next/image";
+import { Json } from "@/types";
 
 type Props = {
     message: {
@@ -11,7 +12,7 @@ type Props = {
         sent_at: string;
         void_id: string;
         is_media: boolean;
-        media_src: string | null;
+        media: Json | null;
     },
     replied?: {
         id: number;
@@ -20,7 +21,7 @@ type Props = {
         sent_at: string;
         void_id: string;
         is_media: boolean;
-        media_src: string | null;
+        media: Json | null;
     },
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
 }
