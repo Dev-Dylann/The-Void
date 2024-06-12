@@ -1,8 +1,10 @@
-import Link from "next/link"
-import { inter } from "./fonts"
-import formatDate from "@/lib/formatDate"
-import { PhotoIcon } from "@heroicons/react/24/outline";
 import { Json } from "@/types";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect } from "react";
+import { inter } from "./fonts";
+import formatDate from "@/lib/formatDate";
+import { ArrowDownTrayIcon, PhotoIcon } from "@heroicons/react/24/outline";
 
 type Props = {
     message: {
@@ -26,7 +28,7 @@ type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
 }
 
-export default function Message({ message, replied, setReplying }: Props) {
+export default function MediaMessage({ message, replied, setReplying }: Props) {
 
     const replyActive = (id: number) => {
         const input = document.querySelector<HTMLInputElement>('#message')
@@ -35,9 +37,10 @@ export default function Message({ message, replied, setReplying }: Props) {
     }
 
     const datetime = formatDate(message.sent_at)
+    const media = message.media as any
 
     return (
-        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
+        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
@@ -51,7 +54,22 @@ export default function Message({ message, replied, setReplying }: Props) {
                 </Link>
             )}
 
-            <pre className={`${inter.className} text-xs text-wrap`}>{message.message}</pre>
+            <div className='flex items-center gap-2 text-sm'>
+                {media.type.startsWith('image') ? (
+                    <Image
+                        src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
+                        alt={media.path}
+                        width={media.width}
+                        height={media.height}
+                        quality={50}
+                        className='rounded'
+                    ></Image>
+                ) : (
+                    <video controls className=''>
+                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.path} />
+                    </video>
+                )}
+            </div>
 
             <span className='text-[10px] text-gray-400'>{datetime}</span>
         </div>

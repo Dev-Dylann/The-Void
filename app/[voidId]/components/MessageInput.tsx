@@ -39,6 +39,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const { voidId } = useParams()
+    const repliedMedia = replied?.media as any
 
     const [state, formAction] = useFormState(inputNewMessage, initState)
 
@@ -71,13 +72,26 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     return (
         <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
-                {replying && (
+                {replying && !replied?.is_media && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
                         <button type="button" onClick={() => setReplying(undefined)}>
                             <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
                         </button>
                         Replying to
                         <pre className={`${inter.className} text-white line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied?.message}</pre>
+                    </div>
+                )}
+
+                {replying && replied?.is_media && (
+                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
+                        <button type="button" onClick={() => setReplying(undefined)}>
+                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
+                        </button>
+                        Replying to
+                        <div className='flex items-center gap-2 text-white'>
+                            <PhotoIcon className='h-6 w-6' />
+                            {repliedMedia.type.includes('image') ? "Image" : "Video"}
+                        </div>
                     </div>
                 )}
                 <label htmlFor="message" className='absolute -left-[999px]'>
@@ -91,7 +105,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             </form>
 
             {!message && (
-                <form action="" className='-order-1 relative'>
+                <form action="" className='-order-1 relative h-fit self-end'>
                     <input type="file" name="media" id="media" ref={fileInputRef} accept="image/*,video/*" className='absolute top-0 left-0 w-full h-full opacity-0' value='' onChange={(e) => handleMediaChange(e.target.files)} />
                     <div className='p-3 rounded-lg w-fit border'>
                         <PhotoIcon className='h-5 w-5' />

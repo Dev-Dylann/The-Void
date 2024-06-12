@@ -4,6 +4,7 @@ import Message from "@/app/ui/Message"
 import Hammer from 'hammerjs'
 import ToBottom from "@/app/components/ToBottom"
 import { Json } from '@/types'
+import MediaMessage from '@/app/ui/MediaMessage'
 
 type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
@@ -102,11 +103,15 @@ export default function MessageArea({ setReplying, messages }: Props) {
                         return reply.id.toString() === message.replied
                     })
 
-                    return (
-                        (
+                    if (!message.is_media) {
+                        return (
                             <Message key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
                         )
-                    )
+                    } else {
+                        return (
+                            <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
+                        )
+                    }
                 })
             )}
 
