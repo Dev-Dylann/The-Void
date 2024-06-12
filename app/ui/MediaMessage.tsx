@@ -66,7 +66,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                     ></Image>
                 ) : (
                     <video controls className=''>
-                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.path} />
+                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
                     </video>
                 )}
             </div>
