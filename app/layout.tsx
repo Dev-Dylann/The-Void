@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: 'The Void',
     template: '%s | The Void'
   },
-  description: "Create anonymous chatrooms for you andd your friends!",
+  description: "Create anonymous chatrooms for you and your friends!",
 };
 
 export const viewport: Viewport = {

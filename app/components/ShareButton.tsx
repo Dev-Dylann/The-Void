@@ -1,18 +1,18 @@
 "use client"
 
 import { ShareIcon } from "@heroicons/react/24/outline"
-import { usePathname } from "next/navigation"
 import notify from "../ui/toast"
 
 type Props = {
     voidName: string,
+    voidId: string
 }
 
-const shareVoid = async (voidName: string, pathname: string) => {
+const shareVoid = async (voidName: string, voidId: string) => {
     const shareData = {
         title: `${voidName} | The Void`,
-        text: 'Join this anonymous void and hop on the discussion. Only you know which messages you send 😉',
-        url: `/${pathname}`
+        text: `Click the link to join this anonymous void and hop on the discussion. Only you know which messages you send 😉\nOr head to the-void-pi.netlify.app and paste the Void ID for ${voidName} \nVoid ID: ${voidId}`,
+        url: `the-void-pi.vercel.app/${voidId}`
     }
 
     if (navigator.share) {
@@ -27,12 +27,10 @@ const shareVoid = async (voidName: string, pathname: string) => {
     }
 }
 
-export default function ShareButton({ voidName }: Props) {
-
-    const pathname = usePathname()
+export default function ShareButton({ voidName, voidId }: Props) {
 
     return (
-        <button className='p-2 rounded-lg' onClick={() => shareVoid(voidName, pathname)}>
+        <button className='p-2 rounded-lg' onClick={() => shareVoid(voidName, voidId)}>
             <ShareIcon className='h-5 w-5' />
         </button>
     )

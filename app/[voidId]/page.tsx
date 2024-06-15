@@ -47,7 +47,7 @@ export default async function VoidRoom({ params }: Props) {
                     <ArrowLeftIcon className='h-5 w-5' />
                 </Link>
                 <h1>{voidName}</h1>
-                <ShareButton voidName={voidName} />
+                <ShareButton voidName={voidName} voidId={voidId} />
             </header>
 
             <main className='grow flex flex-col bg-black/65 h-screen prevent-select'>
