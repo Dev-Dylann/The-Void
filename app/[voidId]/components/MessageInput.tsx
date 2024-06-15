@@ -10,6 +10,8 @@ import { XMarkIcon, PhotoIcon, ArrowLeftIcon, PaperAirplaneIcon } from "@heroico
 import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
+import uploadMedia from "@/lib/uploadMedia"
+import notify from "@/app/ui/toast"
 
 type Props = {
     replying: number | undefined,
@@ -69,6 +71,43 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         setDimensions(null)
     }
 
+    const uploadMediaAndUpdateMessages = async () => {
+        const { fileName, error } = await uploadMedia(voidId as string, media!, dimensions!)
+
+        if (error) {
+            nullMedia()
+            return
+        }
+
+        const mediaInfo = {
+            path: `/${voidId}/${fileName}`,
+            width: dimensions?.width,
+            height: dimensions?.height,
+            type: media?.type
+        }
+
+        const formData = new FormData()
+        formData.append('voidId', voidId as string)
+        formData.append('replied', replied?.id.toString()!)
+        formData.append('isMedia', '1')
+        formData.append('media', JSON.stringify(mediaInfo))
+
+
+        const status = await inputNewMessage({ status: '' }, formData)
+
+        if (status.status.includes('Failed')) notify(status.status, 'error')
+
+        nullMedia()
+    }
+
+    /* const mediaArgs = {
+        media: media!,
+        dimensions: dimensions!
+    }
+
+    const uploadMediaWithArgs = uploadMedia.bind(null, mediaArgs)
+ */
+
     return (
         <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
@@ -105,14 +144,21 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             </form>
 
             {!message && (
-                <form action="" className='-order-1 relative h-fit self-end'>
+                <form className='-order-1 relative h-fit self-end'>
+                    <label htmlFor="media" className='absolute -left-[999px]'>
+                        Upload media
+                    </label>
                     <input type="file" name="media" id="media" ref={fileInputRef} accept="image/*,video/*" className='absolute top-0 left-0 w-full h-full opacity-0' value='' onChange={(e) => handleMediaChange(e.target.files)} />
+
+                    <input type="hidden" name="voidId" value={voidId} />
+                    <input type="hidden" name="replied" value={replied?.id.toString()} />
+
                     <div className='p-3 rounded-lg w-fit border'>
                         <PhotoIcon className='h-5 w-5' />
                     </div>
 
                     {media && preview && dimensions && (
-                        <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4 border'>
+                        <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
                             <button type="button" onClick={nullMedia} className='p-2 rounded-lg border w-fit'>
                                 <ArrowLeftIcon className='h-5 w-5' />
                             </button>
@@ -128,13 +174,13 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                                     </Image>
                                 ) : (
                                     <video controls controlsList='nofullscreen nodownload'>
-                                        <source src={preview as string} type={media.type} />
+                                        <source width={dimensions.width} height={dimensions.height} src={preview as string} type={media.type} />
                                         Video preview not supported in your browser.
                                     </video>
                                 )}
                             </div>
 
-                            <button type="submit" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
+                            <button onClick={async () => await uploadMediaAndUpdateMessages()} type="button" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
                                 <PaperAirplaneIcon className='h-5 w-5' />
                                 Send
                             </button>
