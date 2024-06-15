@@ -1,6 +1,8 @@
 import { astro, inter, montserrat } from "./ui/fonts"
 import VoidSelection from './components/VoidSelection'
 import { ToastContainer, Zoom } from "react-toastify"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 import 'react-toastify/ReactToastify.css'
 
@@ -29,6 +31,8 @@ export default function Home() {
         transition={Zoom}
         newestOnTop={false}
       />
+      <SpeedInsights />
+      <Analytics />
     </main>
   )
 }
