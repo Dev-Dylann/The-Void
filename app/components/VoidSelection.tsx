@@ -21,7 +21,7 @@ export default function Selection() {
 
                 <button onClick={() => setSelectionState('join')} className='w-full flex flex-col gap-2 text-xs text-left border rounded-lg p-4 backdrop-blur hover:bg-white hover:text-darkBg'>
                     <span className={`${montserrat.className} text-sm font-semibold`}>Join an Existing Void</span>
-                    Enter the link given to you by Void owner to join
+                    Enter the ID of the Void you want to join
                 </button>
             </>
         )
