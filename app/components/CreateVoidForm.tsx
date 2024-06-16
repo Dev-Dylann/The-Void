@@ -7,7 +7,7 @@ function CreateButton() {
     const { pending } = useFormStatus()
 
     return (
-        <button disabled={pending} className={`${montserrat.className} text-base font-semibold py-2 text-darkBg bg-white rounded-lg disabled:brightness-75`}>
+        <button disabled={pending} className={`${montserrat.className} text-base font-semibold py-2 flex items-center justify-center text-darkBg bg-white rounded-lg disabled:brightness-75`}>
             {pending ? <Loader /> : 'Create Void'}
         </button>
     )

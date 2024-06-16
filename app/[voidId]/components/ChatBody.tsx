@@ -35,11 +35,15 @@ export default function ChatBody({ messagesArray }: Props) {
     const data = subscribeToChanges(voidChannel, voidId as string, setMessages)
 
     useEffect(() => {
-        const repliedMessage = messages.find(message => {
-            return message.id === replying
-        })
+        if (replying) {
+            const repliedMessage = messages.find(message => {
+                return message.id === replying
+            })
 
-        setReplied(repliedMessage)
+            setReplied(repliedMessage)
+        } else {
+            setReplied(undefined)
+        }
     }, [replying, messages])
 
     return (

@@ -39,9 +39,16 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const [dimensions, setDimensions] = useState<{ width: number, height: number } | null>(null)
 
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const hiddenInputRef = useRef<HTMLInputElement>(null)
 
     const { voidId } = useParams()
     const repliedMedia = replied?.media as any
+
+    useEffect(() => {
+        const hiddenInput = hiddenInputRef.current!
+
+        hiddenInput.value = replying?.toString() ?? ''
+    }, [replying])
 
     const [state, formAction] = useFormState(inputNewMessage, initState)
 
@@ -72,7 +79,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     const uploadMediaAndUpdateMessages = async () => {
-        const { fileName, error } = await uploadMedia(voidId as string, media!, dimensions!)
+        const { fileName, error } = await uploadMedia(voidId as string, media!)
 
         if (error) {
             nullMedia()
@@ -88,7 +95,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
 
         const formData = new FormData()
         formData.append('voidId', voidId as string)
-        formData.append('replied', replied?.id.toString()!)
+        formData.append('replied', replying?.toString()!)
         formData.append('isMedia', '1')
         formData.append('media', JSON.stringify(mediaInfo))
 
@@ -99,14 +106,6 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
 
         nullMedia()
     }
-
-    /* const mediaArgs = {
-        media: media!,
-        dimensions: dimensions!
-    }
-
-    const uploadMediaWithArgs = uploadMedia.bind(null, mediaArgs)
- */
 
     return (
         <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
@@ -138,7 +137,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 </label>
                 <textarea name="message" rows={1} id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 h-fit self-center px-4 outline outline-2 focus:outline-white -outline-offset-2 grow resize-none' />
                 <input type="hidden" name="voidId" value={voidId} />
-                <input type="hidden" name="replied" value={replied?.id.toString()} />
+                <input type="hidden" name="replied" ref={hiddenInputRef} />
 
                 <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state.status} />
             </form>

@@ -29,7 +29,7 @@ type Props = {
 export default function Message({ message, replied, setReplying }: Props) {
 
     const replyActive = (id: number) => {
-        const input = document.querySelector<HTMLInputElement>('#message')
+        const input = document.querySelector<HTMLTextAreaElement>('#message')
         setReplying(id)
         input?.focus()
     }

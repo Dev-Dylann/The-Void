@@ -1,7 +1,7 @@
 import notify from "@/app/ui/toast";
 import supabase from "./supabase";
 
-export default async function uploadMedia(voidId: string, media: File, dimensions: { width: number, height: number }) {
+export default async function uploadMedia(voidId: string, media: File) {
 
     const fileName = `${voidId}_${Date.now()}`
 

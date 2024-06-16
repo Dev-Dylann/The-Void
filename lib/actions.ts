@@ -45,16 +45,17 @@ export async function fetchMessages(voidId: string) {
 } */
 
 export async function inputNewMessage(prevState: { status: string }, formData: FormData) {
+
     const message = formData.get('message')?.toString().trim()
     const voidId = formData.get('voidId')?.toString()
-    const replied = formData.get('replied')?.toString() ?? null
+    const replied = formData.get('replied')?.toString()
     const isMedia = formData.get('isMedia')?.toString()
     const media = formData.get('media')?.toString() ?? null
 
     const { error } = await supabase
         .from('messages')
         .insert({
-            message: message, void_id: voidId, replied: replied, is_media: !!Number(isMedia), media: media ? JSON.parse(media!) : null
+            message: message, void_id: voidId, replied: replied ?? null, is_media: !!Number(isMedia), media: media ? JSON.parse(media!) : null
         })
 
     if (error) {
