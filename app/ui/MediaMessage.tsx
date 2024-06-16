@@ -64,7 +64,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                 </Link>
             )}
 
-            <div className='flex items-center gap-2 text-sm max-h-[40vh] overflow-hidden' onClick={() => setFullscreen(true)}>
+            <div className='flex items-center gap-2 text-sm overflow-hidden' onClick={() => setFullscreen(true)}>
                 {media.type.startsWith('image') ? (
                     <Image
                         src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
@@ -83,7 +83,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
 
             <span className='text-[10px] text-gray-400'>{datetime}</span>
 
-            {fullscreen && (
+            {/* {fullscreen && (
                 <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
                     <button type="button" onClick={() => setFullscreen(false)} className='p-2 rounded-lg border w-fit'>
                         <XMarkIcon className='h-5 w-5' />
@@ -115,7 +115,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                 </div>
 
 
-            )}
+            )} */}
         </div>
     )
 }
