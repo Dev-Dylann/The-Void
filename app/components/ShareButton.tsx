@@ -11,8 +11,8 @@ type Props = {
 const shareVoid = async (voidName: string, voidId: string) => {
     const shareData = {
         title: `${voidName} | The Void`,
-        text: `Click the link to join this anonymous void and hop on the discussion. Only you know which messages you send 😉\nOr head to the-void-pi.netlify.app and paste the Void ID for ${voidName} \nVoid ID: ${voidId}`,
-        url: `the-void-pi.vercel.app/${voidId}`
+        text: `Click the link to join this anonymous void and hop on the discussion. Only you know which messages you send 😉\nOr head to the-void-pi.netlify.app and paste the Void ID for ${voidName} \nVoid ID: ${voidId}\n\n`,
+        url: `/${voidId}`
     }
 
     if (navigator.share) {
