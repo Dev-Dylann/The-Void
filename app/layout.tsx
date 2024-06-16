@@ -10,6 +10,10 @@ export const metadata: Metadata = {
     template: '%s | The Void'
   },
   description: "Create anonymous chatrooms for you and your friends!",
+  metadataBase: new URL('https://the-void-pi.vercel.app'),
+  openGraph: {
+    images: '/opengraph-image.jpg',
+  },
 };
 
 export const viewport: Viewport = {
