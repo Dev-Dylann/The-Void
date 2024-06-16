@@ -50,7 +50,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='relative border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
+        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className='relative border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
@@ -75,7 +75,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         className='rounded'
                     ></Image>
                 ) : (
-                    <video className='rounded'>
+                    <video controls className='rounded'>
                         <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
                     </video>
                 )}
