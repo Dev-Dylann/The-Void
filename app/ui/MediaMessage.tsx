@@ -1,10 +1,10 @@
 import { Json } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { inter } from "./fonts";
 import formatDate from "@/lib/formatDate";
-import { ArrowDownTrayIcon, PhotoIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, PhotoIcon, PlayCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 type Props = {
     message: {
@@ -28,7 +28,16 @@ type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
 }
 
+const extractExtension = (type: string) => {
+    const index = type.indexOf('/')
+    const ext = type.slice(index + 1)
+
+    return '.' + ext
+}
+
 export default function MediaMessage({ message, replied, setReplying }: Props) {
+
+    const [fullscreen, setFullscreen] = useState(false)
 
     const replyActive = (id: number) => {
         const input = document.querySelector<HTMLInputElement>('#message')
@@ -41,7 +50,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
+        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='relative border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
@@ -55,7 +64,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                 </Link>
             )}
 
-            <div className='flex items-center gap-2 text-sm'>
+            <div className='flex items-center gap-2 text-sm max-h-[40vh] overflow-hidden' onClick={() => setFullscreen(true)}>
                 {media.type.startsWith('image') ? (
                     <Image
                         src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
@@ -66,13 +75,47 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         className='rounded'
                     ></Image>
                 ) : (
-                    <video controls className='rounded'>
+                    <video className='rounded'>
                         <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
                     </video>
                 )}
             </div>
 
             <span className='text-[10px] text-gray-400'>{datetime}</span>
+
+            {fullscreen && (
+                <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
+                    <button type="button" onClick={() => setFullscreen(false)} className='p-2 rounded-lg border w-fit'>
+                        <XMarkIcon className='h-5 w-5' />
+                    </button>
+
+                    <div className='grow flex justify-center items-center overflow-hidden'>
+                        {media.type.startsWith('image') ? (
+                            <Image
+                                src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
+                                alt={media.path}
+                                width={media.width}
+                                height={media.height}
+                                quality={50}
+                                className='max-h-full w-fit max-w-full'
+                            >
+                            </Image>
+                        ) : (
+                            <video controls>
+                                <source width={media.width} height={media.height} src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
+                                Video preview not supported in your browser.
+                            </video>
+                        )}
+                    </div>
+
+                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path + '.jpg'} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
+                        <ArrowDownTrayIcon className='h-5 w-5' />
+                        Download
+                    </a>
+                </div>
+
+
+            )}
         </div>
     )
 }

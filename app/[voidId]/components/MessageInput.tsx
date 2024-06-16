@@ -12,6 +12,7 @@ import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
 import uploadMedia from "@/lib/uploadMedia"
 import notify from "@/app/ui/toast"
+import Loader from "@/app/ui/Loader"
 
 type Props = {
     replying: number | undefined,
@@ -37,6 +38,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const [media, setMedia] = useState<File | null>()
     const [preview, setPreview] = useState<string | ArrayBuffer | null>('')
     const [dimensions, setDimensions] = useState<{ width: number, height: number } | null>(null)
+    const [uploading, setUploading] = useState(false)
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const hiddenInputRef = useRef<HTMLInputElement>(null)
@@ -79,9 +81,11 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     const uploadMediaAndUpdateMessages = async () => {
+        setUploading(true)
         const { fileName, error } = await uploadMedia(voidId as string, media!)
 
         if (error) {
+            setUploading(false)
             nullMedia()
             return
         }
@@ -102,8 +106,13 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
 
         const status = await inputNewMessage({ status: '' }, formData)
 
-        if (status.status.includes('Failed')) notify(status.status, 'error')
+        if (status.status.includes('Failed')) {
+            setUploading(false)
+            notify(status.status, 'error')
+            nullMedia()
+        }
 
+        setUploading(false)
         nullMedia()
     }
 
@@ -168,7 +177,8 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                                         alt={media.name}
                                         width={dimensions.width}
                                         height={dimensions.height}
-                                        className='max-h-full max-w-full'
+                                        quality={50}
+                                        className='max-h-full w-fit max-w-full'
                                     >
                                     </Image>
                                 ) : (
@@ -179,9 +189,18 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                                 )}
                             </div>
 
-                            <button onClick={async () => await uploadMediaAndUpdateMessages()} type="button" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
-                                <PaperAirplaneIcon className='h-5 w-5' />
-                                Send
+                            <button disabled={uploading} onClick={async () => await uploadMediaAndUpdateMessages()} type="button" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold disabled:brightness-75'>
+                                {!uploading ? (
+                                    <>
+                                        <PaperAirplaneIcon className='h-5 w-5' />
+                                        Send
+                                    </>
+                                ) : (
+                                    <>
+                                        <Loader />
+                                        Sending
+                                    </>
+                                )}
                             </button>
                         </div>
                     )}
