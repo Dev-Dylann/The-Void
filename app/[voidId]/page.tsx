@@ -50,7 +50,7 @@ export default async function VoidRoom({ params }: Props) {
                 <ShareButton voidName={voidName} voidId={voidId} />
             </header>
 
-            <main className='grow flex flex-col bg-black/65 h-screen prevent-select'>
+            <main className='grow flex flex-col bg-black/65 h-full prevent-select'>
                 <ChatBody messagesArray={messages.messages} />
             </main>
         </>

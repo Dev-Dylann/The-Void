@@ -50,7 +50,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className='relative border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
+        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[80vw] scroll-mt-40 backdrop-blur message'>
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
@@ -64,7 +64,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                 </Link>
             )}
 
-            <div className='flex items-center gap-2 text-sm overflow-hidden' onClick={() => setFullscreen(true)}>
+            <div className='flex items-center gap-2 text-sm overflow-hidden max-h-[40vh]' onClick={() => setFullscreen(true)}>
                 {media.type.startsWith('image') ? (
                     <Image
                         src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
@@ -83,8 +83,8 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
 
             <span className='text-[10px] text-gray-400'>{datetime}</span>
 
-            {/* {fullscreen && (
-                <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
+            {fullscreen && (
+                <div className='fixed top-0 left-0 h-full w-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
                     <button type="button" onClick={() => setFullscreen(false)} className='p-2 rounded-lg border w-fit'>
                         <XMarkIcon className='h-5 w-5' />
                     </button>
@@ -108,14 +108,14 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         )}
                     </div>
 
-                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path + '.jpg'} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
+                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
                         <ArrowDownTrayIcon className='h-5 w-5' />
                         Download
                     </a>
                 </div>
 
 
-            )} */}
+            )}
         </div>
     )
 }
