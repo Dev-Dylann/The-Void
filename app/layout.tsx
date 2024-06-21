@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className='scroll-smooth'>
-      <body className={`${inter.className} bg-darkBg text-white flex flex-col relative`}>
+      <body className={`${inter.className} bg-darkBg text-white grid grid-rows-[auto,_1fr] relative overflow-y-hidden`}>
         <Image
           alt='Background'
           src={mobileBg}

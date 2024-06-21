@@ -9,9 +9,9 @@ import 'react-toastify/ReactToastify.css'
 export default function Home() {
 
   return (
-    <main className='relative grow flex flex-col'>
+    <main className='relative row-span-full flex flex-col'>
 
-      <section className='w-full h-full grow bg-gradient-to-b from-transparent from-10% to-darkBg to-80% p-5 pb-12 flex flex-col justify-end text-center'>
+      <section className='w-full h-full bg-gradient-to-b from-transparent from-10% to-darkBg to-80% p-5 pb-12 flex flex-col justify-end text-center'>
         <p className={`${montserrat.className} font-semibold text-lg`}>Welcome to</p>
         <h1 className={`${astro.className} font-semibold text-[65px] -mt-2`}>The Void</h1>
 
