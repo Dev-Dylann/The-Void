@@ -29,11 +29,13 @@ export default function MessageArea({ setReplying, messages }: Props) {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
+    /* scroll to bottom of page whenever a new message is sent or received */
     useEffect(() => {
         scrollToBottom()
         console.log(messages)
     }, [messages])
 
+    /* toggle scroll to bottom button visibility based on how much user has scrolled from bottom of component */
     useEffect(() => {
         const container = containerRef.current
 
@@ -45,6 +47,7 @@ export default function MessageArea({ setReplying, messages }: Props) {
 
         container?.addEventListener('scroll', checkAtBottom)
 
+        /* Initial check */
         checkAtBottom()
 
         return () => {
@@ -52,6 +55,7 @@ export default function MessageArea({ setReplying, messages }: Props) {
         }
     }, [])
 
+    /* swipe gesture funtion with hammerjs */
     useEffect(() => {
         const replyActive = (id: number) => {
             const input = document.querySelector<HTMLInputElement>('#message')
@@ -115,6 +119,7 @@ export default function MessageArea({ setReplying, messages }: Props) {
                 })
             )}
 
+            {/* div always at the bottom of all messages to reference the bottom */}
             <div ref={bottomRef}></div>
 
             <ToBottom scrollFn={scrollToBottom} atBottom={atBottom} />

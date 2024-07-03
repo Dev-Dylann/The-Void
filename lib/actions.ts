@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
+/* Creates a new Void */
 export async function createVoid(formData: FormData) {
 
     const id = nanoid(10)
@@ -14,9 +15,11 @@ export async function createVoid(formData: FormData) {
 
     if (error) throw new Error(error.message)
 
+    /* Redirect to newly created Void */
     redirect(`/${id}`)
 }
 
+/* Fetch name of specified Void Id */
 export async function fetchVoidName(voidId: string) {
     const { data, error } = await supabase
         .from('void_rooms')
@@ -28,6 +31,7 @@ export async function fetchVoidName(voidId: string) {
     return { data }
 }
 
+/* Fetch all messags of the Void with specified Id */
 export async function fetchMessages(voidId: string) {
     const { data, error } = await supabase
         .from('messages')

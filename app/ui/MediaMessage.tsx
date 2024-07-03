@@ -1,10 +1,10 @@
 import { Json } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { inter } from "./fonts";
 import formatDate from "@/lib/formatDate";
-import { ArrowDownTrayIcon, PhotoIcon, PlayCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 type Props = {
     message: {
@@ -26,13 +26,6 @@ type Props = {
         media: Json | null;
     },
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
-}
-
-const extractExtension = (type: string) => {
-    const index = type.indexOf('/')
-    const ext = type.slice(index + 1)
-
-    return '.' + ext
 }
 
 export default function MediaMessage({ message, replied, setReplying }: Props) {
@@ -58,7 +51,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         <XMarkIcon className='h-5 w-5' />
                     </button>
 
-                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold order-1'>
+                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} download className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold order-1'>
                         <ArrowDownTrayIcon className='h-5 w-5' />
                         Download
                     </a>
@@ -97,39 +90,6 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
 
             <span className={!fullscreen ? 'text-[10px] text-gray-400' : 'hidden'}>{datetime}</span>
 
-            {/* {fullscreen && (
-                <div className='fixed top-0 left-0 h-full w-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
-                    <button type="button" onClick={() => setFullscreen(false)} className='p-2 rounded-lg border w-fit'>
-                        <XMarkIcon className='h-5 w-5' />
-                    </button>
-
-                    <div className='grow flex justify-center items-center overflow-hidden'>
-                        {media.type.startsWith('image') ? (
-                            <Image
-                                src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
-                                alt={media.path}
-                                width={media.width}
-                                height={media.height}
-                                quality={50}
-                                className='max-h-full w-fit max-w-full'
-                            >
-                            </Image>
-                        ) : (
-                            <video controls>
-                                <source width={media.width} height={media.height} src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
-                                Video preview not supported in your browser.
-                            </video>
-                        )}
-                    </div>
-
-                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold'>
-                        <ArrowDownTrayIcon className='h-5 w-5' />
-                        Download
-                    </a>
-                </div>
-
-
-            )} */}
         </div>
     )
 }

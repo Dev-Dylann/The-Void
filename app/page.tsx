@@ -1,10 +1,7 @@
 import { astro, inter, montserrat } from "./ui/fonts"
 import VoidSelection from './components/VoidSelection'
-import { ToastContainer, Zoom } from "react-toastify"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
-
-import 'react-toastify/ReactToastify.css'
 
 export default function Home() {
 
@@ -19,18 +16,11 @@ export default function Home() {
           Send messages, images and videos in completely anonymous chatrooms called <span className={`${astro.className}`}>Voids</span>. Only you know which messages you send 😉
         </p>
 
+        {/* Join or create void form */}
         <VoidSelection />
       </section>
 
-      <ToastContainer
-        autoClose={2500}
-        position="top-center"
-        hideProgressBar={true}
-        limit={3}
-        theme="dark"
-        transition={Zoom}
-        newestOnTop={false}
-      />
+      {/* Vercel Stuff */}
       <SpeedInsights />
       <Analytics />
     </main>

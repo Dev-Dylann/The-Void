@@ -7,7 +7,6 @@ import { subscribeToChanges } from '@/lib/SubscribeRealtime'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
 import { Json } from '@/types'
-import notify from '@/app/ui/toast'
 
 type Message = {
     id: number;
@@ -32,8 +31,9 @@ export default function ChatBody({ messagesArray }: Props) {
 
     const voidChannel = supabase.channel(voidId as string)
 
-    const data = subscribeToChanges(voidChannel, voidId as string, setMessages)
+    subscribeToChanges(voidChannel, voidId as string, setMessages)
 
+    /* Set message being replied to */
     useEffect(() => {
         if (replying) {
             const repliedMessage = messages.find(message => {

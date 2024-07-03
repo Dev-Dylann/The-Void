@@ -2,7 +2,6 @@ import { useFormStatus } from "react-dom"
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline"
 import Loader from "@/app/ui/Loader"
 import { useEffect } from "react"
-import notify from "@/app/ui/toast"
 
 type Props = {
     message: string,
@@ -19,9 +18,7 @@ export default function SendButton({ message, setMessage, setReplying, formStatu
             setMessage('')
             setReplying(undefined)
         } else if (!pending && formStatus.includes('Failed')) {
-            if (window !== undefined) {
-                notify(formStatus, 'error')
-            }
+            console.log(formStatus)
         }
     }, [pending, formStatus, setMessage, setReplying])
 

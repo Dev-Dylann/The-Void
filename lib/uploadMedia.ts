@@ -1,4 +1,3 @@
-import notify from "@/app/ui/toast";
 import supabase from "./supabase";
 
 export default async function uploadMedia(voidId: string, media: File) {
@@ -12,7 +11,7 @@ export default async function uploadMedia(voidId: string, media: File) {
             cacheControl: '3600'
         })
 
-    if (error) notify('Failed to upload', 'error')
+    if (error) console.log(error.message)
 
     return { fileName, error }
 }

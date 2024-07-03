@@ -12,15 +12,7 @@ type message = {
     media: Json | null;
 }
 
-export function subscribeToChanges(channel: RealtimeChannel, voidId: string, setMessages: React.Dispatch<React.SetStateAction<{
-    id: number;
-    message: string;
-    replied: string | null;
-    sent_at: string;
-    void_id: string;
-    is_media: boolean;
-    media: Json | null;
-}[]>>) {
+export function subscribeToChanges(channel: RealtimeChannel, voidId: string, setMessages: React.Dispatch<React.SetStateAction<message[]>>) {
 
     const listener = channel.on(
         'postgres_changes',
@@ -38,8 +30,4 @@ export function subscribeToChanges(channel: RealtimeChannel, voidId: string, set
         .subscribe()
 
     return listener
-}
-
-export function unsubscribeFromChanges(channel: RealtimeChannel) {
-    supabase.removeChannel(channel)
 }

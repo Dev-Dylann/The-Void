@@ -11,7 +11,6 @@ import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
 import uploadMedia from "@/lib/uploadMedia"
-import notify from "@/app/ui/toast"
 import Loader from "@/app/ui/Loader"
 
 type Props = {
@@ -28,10 +27,6 @@ type Props = {
     }
 }
 
-const initState = {
-    status: ""
-}
-
 export default function MessageInput({ replying, setReplying, replied }: Props) {
 
     const [message, setMessage] = useState('')
@@ -46,14 +41,16 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const { voidId } = useParams()
     const repliedMedia = replied?.media as any
 
+    const [state, formAction] = useFormState(inputNewMessage, { status: "" })
+
+    /* set value of the hidden ref for id of message beimg replied to cos it wasn't working the normal way for some reason */
     useEffect(() => {
         const hiddenInput = hiddenInputRef.current!
 
         hiddenInput.value = replying?.toString() ?? ''
     }, [replying])
 
-    const [state, formAction] = useFormState(inputNewMessage, initState)
-
+    /* handle media change ... lol */
     const handleMediaChange = (files: FileList | null) => {
         if (files) {
             const media = files[0]
@@ -65,6 +62,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         }
     }
 
+    /* get dimensions of selected media for easy rendering with next and triggers the preview screen */
     const showPreview = (media: File) => {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -74,12 +72,14 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         reader.readAsDataURL(media)
     }
 
+    /* untriggers the preview screen */
     const nullMedia = () => {
         setMedia(null)
         setPreview(null)
         setDimensions(null)
     }
 
+    /* uploads media to the bucket first then adds a media json object to the messages table */
     const uploadMediaAndUpdateMessages = async () => {
         setUploading(true)
         const { fileName, error } = await uploadMedia(voidId as string, media!)
@@ -90,6 +90,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             return
         }
 
+        /* create the media json object */
         const mediaInfo = {
             path: `/${voidId}/${fileName}`,
             width: dimensions?.width,
@@ -97,6 +98,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             type: media?.type
         }
 
+        /* input new message action needs a formdata so creating one and appending the required data */
         const formData = new FormData()
         formData.append('voidId', voidId as string)
         formData.append('replied', replying?.toString()!)
@@ -108,7 +110,6 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
 
         if (status.status.includes('Failed')) {
             setUploading(false)
-            notify(status.status, 'error')
             nullMedia()
         }
 
@@ -141,6 +142,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                         </div>
                     </div>
                 )}
+
                 <label htmlFor="message" className='absolute -left-[999px]'>
                     Type your message here
                 </label>
