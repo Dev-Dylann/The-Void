@@ -5,15 +5,23 @@ import { nanoid } from 'nanoid'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
+type returnObject = {
+    status: "error" | "success" | "loading" | "",
+    message: string,
+}
+
 /* Creates a new Void */
-export async function createVoid(formData: FormData) {
+export async function createVoid(prevState: returnObject, formData: FormData): Promise<returnObject> {
 
     const id = nanoid(10)
     const voidName = formData.get('voidName')?.toString().trim()
 
     const { error } = await supabase.from('void_rooms').insert({ id: id, void_name: voidName })
 
-    if (error) throw new Error(error.message)
+    if (error) {
+        console.log(error)
+        return { status: "error", message: "Failed to Create Void!" }
+    }
 
     /* Redirect to newly created Void */
     redirect(`/${id}`)
@@ -68,50 +76,4 @@ export async function inputNewMessage(prevState: { status: string }, formData: F
 
     revalidatePath(`/${voidId}`)
     return { status: 'Message sent successfully' }
-}
-
-type MediaArgs = {
-    media: File,
-    dimensions: { width: number, height: number }
-}
-
-/* export async function uploadMedia(mediaArgs: MediaArgs, formData: FormData) {
-    console.log(formData)
-
-    const voidId = formData.get('voidId')
-
-    const { media, dimensions } = mediaArgs
-
-    const fileName = `${voidId}_${Date.now()}`
-
-    const mediaInfo = {
-        path: `/${fileName}`,
-        width: dimensions.width,
-        height: dimensions.height,
-        type: media.type
-    }
-
-    console.log(media)
-    console.log(fileName)
-    console.log(voidId)
-
-    const { error } = await supabase
-        .storage
-        .from('void_media')
-        .upload(fileName, media, {
-            cacheControl: '3600'
-        })
-
-    if (error) throw new Error(error.message)
-
-    formData.append('isMedia', '1')
-    formData.append('media', mediaInfo as any)
-
-    const status = await inputNewMessage({ status: '' }, formData)
-
-    return status
-} */
-
-export async function uploadMedia({ media }: { media: File }, formData: FormData) {
-    console.log(formData)
 }

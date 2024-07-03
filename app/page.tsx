@@ -1,5 +1,6 @@
 import { astro, inter, montserrat } from "./ui/fonts"
 import VoidSelection from './components/VoidSelection'
+import { Toaster } from "sonner"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
 
@@ -19,6 +20,12 @@ export default function Home() {
         {/* Join or create void form */}
         <VoidSelection />
       </section>
+
+      <Toaster
+        theme="dark"
+        position="top-right"
+        offset={40}
+      />
 
       {/* Vercel Stuff */}
       <SpeedInsights />
