@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
     return (
         <section className='p-5 bg-darkBg/65 min-h-screen backdrop-blur flex flex-col gap-2 justify-center items-center text-center'>
             <FaceFrownIcon className='h-16 w-16' />
-            <h2 className={`${montserrat.className} text-2xl font-semibold`}>Failed to Create Void</h2>
+            <h2 className={`${montserrat.className} text-2xl font-semibold`}>Something went wrong!</h2>
 
             <button onClick={() => reset()} className='mt-2 border rounded-lg font-semibold px-4 py-2 hover:bg-white hover:text-darkBg'>Try Again</button>
         </section>
