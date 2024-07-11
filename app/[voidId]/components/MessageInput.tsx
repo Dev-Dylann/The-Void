@@ -12,6 +12,7 @@ import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
 import uploadMedia from "@/lib/uploadMedia"
 import Loader from "@/app/ui/Loader"
+import notify from "@/app/ui/toast"
 
 type Props = {
     replying: number | undefined,
@@ -25,6 +26,11 @@ type Props = {
         is_media: boolean;
         media: Json | null;
     }
+}
+
+type stateType = {
+    status: "error" | "success" | "loading" | "",
+    message: string,
 }
 
 export default function MessageInput({ replying, setReplying, replied }: Props) {
@@ -41,7 +47,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const { voidId } = useParams()
     const repliedMedia = replied?.media as any
 
-    const [state, formAction] = useFormState(inputNewMessage, { status: "" })
+    const [state, formAction] = useFormState(inputNewMessage, { status: "", message: "" } as stateType)
 
     /* set value of the hidden ref for id of message beimg replied to cos it wasn't working the normal way for some reason */
     useEffect(() => {
@@ -85,6 +91,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         const { fileName, error } = await uploadMedia(voidId as string, media!)
 
         if (error) {
+            notify('error', 'Failed to send media!')
             setUploading(false)
             nullMedia()
             return
@@ -106,9 +113,10 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         formData.append('media', JSON.stringify(mediaInfo))
 
 
-        const status = await inputNewMessage({ status: '' }, formData)
+        const state = await inputNewMessage({ status: '', message: "" }, formData)
 
-        if (status.status.includes('Failed')) {
+        if (state.status === 'error') {
+            notify('error', "Failed to send message")
             setUploading(false)
             nullMedia()
         }
@@ -150,7 +158,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 <input type="hidden" name="voidId" value={voidId} />
                 <input type="hidden" name="replied" ref={hiddenInputRef} />
 
-                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state.status} />
+                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state} />
             </form>
 
             {!message && (
@@ -209,7 +217,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 </form>
             )}
 
-            {state.status.includes('Failed') && message && (
+            {state.status === 'error' && message && (
                 <span className='text-red-600 italic absolute bottom-1 left-5 text-[8px]'>Failed to send message!</span>
             )}
         </section>

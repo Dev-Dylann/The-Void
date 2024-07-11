@@ -51,12 +51,7 @@ export async function fetchMessages(voidId: string) {
     return { messages: data }
 }
 
-/* type newMessageArgs = {
-    voidId: string,
-    replied?: string
-} */
-
-export async function inputNewMessage(prevState: { status: string }, formData: FormData) {
+export async function inputNewMessage(prevState: returnObject, formData: FormData): Promise<returnObject> {
 
     const message = formData.get('message')?.toString().trim()
     const voidId = formData.get('voidId')?.toString()
@@ -71,9 +66,9 @@ export async function inputNewMessage(prevState: { status: string }, formData: F
         })
 
     if (error) {
-        return { status: 'Failed to send message' }
+        return { status: 'error', message: 'Failed to send message!' }
     }
 
     revalidatePath(`/${voidId}`)
-    return { status: 'Message sent successfully' }
+    return { status: 'success', message: 'Message sent successfully!' }
 }
