@@ -18,8 +18,8 @@
     "next": "^14.2.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-toastify": "^10.0.5",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "@types/hammerjs": "^2.0.45",

@@ -7,7 +7,7 @@ import { FaceFrownIcon, ArrowLeftIcon } from "@heroicons/react/24/outline"
 export default function Error({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
     return (
         <>
-            <header className={`${montserrat.className} sticky left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 text-center p-4 shadow-lg bg-darkBg rounded-b-xl z-10`}>
+            <header className={`${montserrat.className} sticky left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 h-fit text-center shadow-lg bg-darkBg rounded-b-xl z-10`}>
                 <Link href='/' className='p-2 rounded-lg'>
                     <ArrowLeftIcon className='h-5 w-5' />
                 </Link>

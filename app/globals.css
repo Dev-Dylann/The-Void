@@ -26,3 +26,8 @@ body {
 .loader {
   background: conic-gradient(transparent, #101720);
 }
+
+#msg-area {
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
+  scrollbar-width: thin;
+}

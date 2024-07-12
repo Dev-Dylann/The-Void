@@ -11,8 +11,8 @@ import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
 import uploadMedia from "@/lib/uploadMedia"
-import notify from "@/app/ui/toast"
 import Loader from "@/app/ui/Loader"
+import notify from "@/app/ui/toast"
 
 type Props = {
     replying: number | undefined,
@@ -28,8 +28,9 @@ type Props = {
     }
 }
 
-const initState = {
-    status: ""
+type stateType = {
+    status: "error" | "success" | "loading" | "",
+    message: string,
 }
 
 export default function MessageInput({ replying, setReplying, replied }: Props) {
@@ -46,14 +47,16 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const { voidId } = useParams()
     const repliedMedia = replied?.media as any
 
+    const [state, formAction] = useFormState(inputNewMessage, { status: "", message: "" } as stateType)
+
+    /* set value of the hidden ref for id of message beimg replied to cos it wasn't working the normal way for some reason */
     useEffect(() => {
         const hiddenInput = hiddenInputRef.current!
 
         hiddenInput.value = replying?.toString() ?? ''
     }, [replying])
 
-    const [state, formAction] = useFormState(inputNewMessage, initState)
-
+    /* handle media change ... lol */
     const handleMediaChange = (files: FileList | null) => {
         if (files) {
             const media = files[0]
@@ -65,6 +68,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         }
     }
 
+    /* get dimensions of selected media for easy rendering with next and triggers the preview screen */
     const showPreview = (media: File) => {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -74,22 +78,26 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         reader.readAsDataURL(media)
     }
 
+    /* untriggers the preview screen */
     const nullMedia = () => {
         setMedia(null)
         setPreview(null)
         setDimensions(null)
     }
 
+    /* uploads media to the bucket first then adds a media json object to the messages table */
     const uploadMediaAndUpdateMessages = async () => {
         setUploading(true)
         const { fileName, error } = await uploadMedia(voidId as string, media!)
 
         if (error) {
+            notify('error', 'Failed to send media!')
             setUploading(false)
             nullMedia()
             return
         }
 
+        /* create the media json object */
         const mediaInfo = {
             path: `/${voidId}/${fileName}`,
             width: dimensions?.width,
@@ -97,6 +105,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             type: media?.type
         }
 
+        /* input new message action needs a formdata so creating one and appending the required data */
         const formData = new FormData()
         formData.append('voidId', voidId as string)
         formData.append('replied', replying?.toString()!)
@@ -104,11 +113,11 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         formData.append('media', JSON.stringify(mediaInfo))
 
 
-        const status = await inputNewMessage({ status: '' }, formData)
+        const state = await inputNewMessage({ status: '', message: "" }, formData)
 
-        if (status.status.includes('Failed')) {
+        if (state.status === 'error') {
+            notify('error', "Failed to send message")
             setUploading(false)
-            notify(status.status, 'error')
             nullMedia()
         }
 
@@ -117,7 +126,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     return (
-        <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
+        <section className='fixed bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && !replied?.is_media && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
@@ -141,6 +150,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                         </div>
                     </div>
                 )}
+
                 <label htmlFor="message" className='absolute -left-[999px]'>
                     Type your message here
                 </label>
@@ -148,7 +158,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 <input type="hidden" name="voidId" value={voidId} />
                 <input type="hidden" name="replied" ref={hiddenInputRef} />
 
-                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state.status} />
+                <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state} />
             </form>
 
             {!message && (
@@ -207,7 +217,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 </form>
             )}
 
-            {state.status.includes('Failed') && message && (
+            {state.status === 'error' && message && (
                 <span className='text-red-600 italic absolute bottom-1 left-5 text-[8px]'>Failed to send message!</span>
             )}
         </section>

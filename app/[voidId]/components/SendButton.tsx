@@ -3,25 +3,25 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline"
 import Loader from "@/app/ui/Loader"
 import { useEffect } from "react"
 import notify from "@/app/ui/toast"
+import { toast } from "sonner"
 
 type Props = {
     message: string,
     setMessage: React.Dispatch<React.SetStateAction<string>>,
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>
-    formStatus: string
+    formStatus: { status: "error" | "success" | "loading" | "", message: string }
 }
 
 export default function SendButton({ message, setMessage, setReplying, formStatus }: Props) {
     const { pending } = useFormStatus()
 
     useEffect(() => {
-        if (!pending && formStatus.includes('success')) {
+        if (!pending && formStatus.status === "success") {
             setMessage('')
             setReplying(undefined)
-        } else if (!pending && formStatus.includes('Failed')) {
-            if (window !== undefined) {
-                notify(formStatus, 'error')
-            }
+        } else if (formStatus.status === "error") {
+            toast.error('Failed to send')
+            console.log(formStatus)
         }
     }, [pending, formStatus, setMessage, setReplying])
 
