@@ -27,14 +27,6 @@ body {
   background: conic-gradient(transparent, #101720);
 }
 
-#chat-page::-webkit-scrollbar {
-  display: none;
-}
-
-#chat-page {
-  scrollbar-width: none;
-}
-
 #msg-area {
   scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
   scrollbar-width: thin;

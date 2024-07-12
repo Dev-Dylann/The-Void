@@ -126,7 +126,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     return (
-        <section className='sticky bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
+        <section className='fixed bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && !replied?.is_media && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>

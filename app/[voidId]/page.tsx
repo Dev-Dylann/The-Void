@@ -42,7 +42,7 @@ export default async function VoidRoom({ params }: Props) {
 
     return (
         <>
-            <header className={`${montserrat.className} sticky left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 shadow-lg bg-darkBg rounded-b-xl z-10`}>
+            <header className={`${montserrat.className} sticky w-full left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 shadow-lg bg-darkBg rounded-b-xl z-10`}>
                 <Link href='/' className='p-2 rounded-lg'>
                     <ArrowLeftIcon className='h-5 w-5' />
                 </Link>
@@ -50,7 +50,7 @@ export default async function VoidRoom({ params }: Props) {
                 <ShareButton voidName={voidName} voidId={voidId} />
             </header>
 
-            <main id="chat-page" className='flex flex-col bg-black/65 prevent-select overflow-y-scroll'>
+            <main className='flex flex-col border bg-black/65 prevent-select overflow-hidden'>
                 <ChatBody messagesArray={messages.messages} />
             </main>
         </>
