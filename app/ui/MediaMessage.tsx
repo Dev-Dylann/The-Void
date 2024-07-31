@@ -5,6 +5,7 @@ import { useState } from "react";
 import { inter } from "./fonts";
 import formatDate from "@/lib/formatDate";
 import { ArrowDownTrayIcon, PhotoIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { downloadImage } from "@/lib/imgDownload";
 
 type Props = {
     message: {
@@ -51,10 +52,10 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         <XMarkIcon className='h-5 w-5' />
                     </button>
 
-                    <a href={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} download className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold order-1'>
+                    <button onClick={async () => await downloadImage(process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path, media.path)} className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold order-1'>
                         <ArrowDownTrayIcon className='h-5 w-5' />
                         Download
-                    </a>
+                    </button>
                 </>
             )}
 
@@ -82,8 +83,8 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                         className={fullscreen ? 'max-h-full w-fit max-w-full' : ''}
                     ></Image>
                 ) : (
-                    <video controls>
-                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} type={media.type} />
+                    <video controls={fullscreen} controlsList="nodownload nofullscreen" className={fullscreen ? 'max-h-full w-fit max-w-full' : ''}>
+                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} width={media.width} height={media.height} type={media.type} />
                     </video>
                 )}
             </div>
