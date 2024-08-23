@@ -44,7 +44,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className={!fullscreen ? `border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[75vw] scroll-mt-40 backdrop-blur message transition-all` : `fixed top-0 left-0 w-full h-full z-[11] backdrop-blur transition-all scroll-mt-40 flex flex-col gap-4 px-5 py-8`}>
+        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className={!fullscreen ? `border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[75vw] scroll-mt-40 backdrop-blur message transition-all` : `fixed top-0 left-0 w-full h-full z-[11] backdrop-blur transition-all scroll-mt-40 flex flex-col gap-4 px-5 py-8`}>
 
             {fullscreen && (
                 <>
