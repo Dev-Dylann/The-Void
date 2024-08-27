@@ -30,10 +30,10 @@ export default function MessageArea({ setReplying, messages }: Props) {
     }
 
     /* scroll to bottom of page whenever a new message is sent or received */
-    useEffect(() => {
+    /* useEffect(() => {
         scrollToBottom()
         console.log(messages)
-    }, [messages])
+    }, [messages]) */
 
     /* toggle scroll to bottom button visibility based on how much user has scrolled from bottom of component */
     useEffect(() => {
