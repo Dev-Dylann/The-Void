@@ -38,7 +38,7 @@ export default function Message({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} onDoubleClick={() => replyActive(message.id)} className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
+        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className='border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit min-w-[40vw] max-w-[80vw] scroll-mt-40 backdrop-blur transition-all message'>
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
                     <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
