@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { inter } from "./ui/fonts";
 import Image from 'next/image'
-import mobileBg from '../public/mobile-bg.jpg'
+import mobileBg from '../public/mobile-bg-new.jpg'
 
 export const metadata: Metadata = {
   title: {
