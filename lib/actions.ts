@@ -39,12 +39,13 @@ export async function fetchVoidName(voidId: string) {
     return { data }
 }
 
-/* Fetch all messags of the Void with specified Id */
+/* Fetch last messags of the Void with specified Id */
 export async function fetchMessages(voidId: string) {
     const { data, error } = await supabase
         .from('messages')
         .select()
         .eq('void_id', voidId)
+        .limit(200)
 
     if (error) throw new Error(error.message)
 

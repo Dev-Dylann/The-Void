@@ -23,17 +23,18 @@ export default function MessageArea({ setReplying, messages }: Props) {
     const [atBottom, setAtBottom] = useState(false)
 
     const bottomRef = useRef<HTMLDivElement>(null)
+    const topRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLTableSectionElement>(null)
 
     const scrollToBottom = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
-    /* scroll to bottom of page whenever a new message is sent or received */
-    /* useEffect(() => {
+    /* scroll to bottom of page only on initial load */
+    useEffect(() => {
         scrollToBottom()
         console.log(messages)
-    }, [messages]) */
+    }, [])
 
     /* toggle scroll to bottom button visibility based on how much user has scrolled from bottom of component */
     useEffect(() => {
@@ -100,6 +101,9 @@ export default function MessageArea({ setReplying, messages }: Props) {
                     <p className='text-xs text-gray-400'>Be the first to send a message</p>
                 </article>
             )}
+
+            {/* div always at the top of all messages to reference the top */}
+            <div ref={topRef}></div>
 
             {messages.length && (
                 messages.map((message) => {
