@@ -66,7 +66,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
 
     /* check if top div is visible and fetch next batch of messages if in view */
     useEffect(() => {
-        topObserver.observe(topRef.current!)
+        if (topRef.current) topObserver.observe(topRef.current)
     }, [])
 
     /* scroll to bottom of page only on initial load */
@@ -149,15 +149,19 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                 </article>
             )}
 
-            {/* loader for when previous messages are being fetched */}
-            <div ref={loaderRef} className="hidden justify-center items-center gap-3 pt-20 pb-4">
-                <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-                <div className='h-2 w-2 bg-white rounded-full animate-bounce'></div>
-            </div>
+            {messages.length && (
+                <>
+                    {/* loader for when previous messages are being fetched */}
+                    <div ref={loaderRef} className="hidden justify-center items-center gap-3 pt-20 pb-4">
+                        <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                        <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                        <div className='h-2 w-2 bg-white rounded-full animate-bounce'></div>
+                    </div>
 
-            {/* div always at the top of all messages to reference the top */}
-            <div ref={topRef}></div>
+                    {/* div always at the top of all messages to reference the top */}
+                    <div ref={topRef}></div>
+                </>
+            )}
 
             {messages.length && (
                 messages.map((message) => {
