@@ -108,7 +108,15 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
 
             let currentMessage: HTMLElement
 
-            hammer.on('panright', (event) => {
+            hammer.on('swipe', (event) => {
+                currentMessage = event.target.closest('.message')!
+
+                if (currentMessage) {
+                    replyActive(Number(currentMessage.id))
+                }
+            })
+
+            /* hammer.on('panright', (event) => {
                 currentMessage = event.target.closest('.message')!
                 if (currentMessage) {
                     currentMessage.style.transform = `translateX(${event.deltaX})`
@@ -124,7 +132,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                         currentMessage.style.transform = `translateX(0)`
                     }
                 }
-            })
+            }) */
 
             return () => {
                 hammer.destroy()
