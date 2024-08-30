@@ -45,13 +45,30 @@ export async function fetchMessages(voidId: string) {
         .from('messages')
         .select()
         .eq('void_id', voidId)
-        .limit(200)
+        .order("id", { ascending: false })
+        .limit(150)
 
     if (error) throw new Error(error.message)
 
-    return { messages: data }
+    return { messages: data.reverse() }
 }
 
+/* fetch next 150 messages when triggered */
+export async function fetchMoreMessages(voidId: string, lastId: string) {
+    const { data, error } = await supabase
+        .from('messages')
+        .select()
+        .eq('void_id', voidId)
+        .lt('id', lastId)
+        .order("id", { ascending: false })
+        .limit(150)
+
+    if (error) throw new Error(error.message)
+
+    return { messages: data.reverse() }
+}
+
+/* inouts new message lol */
 export async function inputNewMessage(prevState: returnObject, formData: FormData): Promise<returnObject> {
 
     const message = formData.get('message')?.toString().trim()

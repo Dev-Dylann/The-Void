@@ -48,7 +48,7 @@ export default function ChatBody({ messagesArray }: Props) {
 
     return (
         <>
-            <MessageArea setReplying={setReplying} messages={messages} />
+            <MessageArea setReplying={setReplying} messages={messages} setMessages={setMessages} />
 
             <MessageInput replying={replying} setReplying={setReplying} replied={replied} />
         </>

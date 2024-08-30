@@ -1,13 +1,24 @@
 import { useRef, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 import Message from "@/app/ui/Message"
 import Hammer from 'hammerjs'
 import ToBottom from "@/app/components/ToBottom"
 import { Json } from '@/types'
 import MediaMessage from '@/app/ui/MediaMessage'
+import { fetchMoreMessages } from '@/lib/actions'
 
 type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
+    setMessages: React.Dispatch<React.SetStateAction<{
+        id: number;
+        message: string;
+        replied: string | null;
+        sent_at: string;
+        void_id: string;
+        is_media: boolean;
+        media: Json | null;
+    }[]>>,
     messages: {
         id: number;
         message: string;
@@ -19,16 +30,44 @@ type Props = {
     }[]
 }
 
-export default function MessageArea({ setReplying, messages }: Props) {
+export default function MessageArea({ setReplying, messages, setMessages }: Props) {
     const [atBottom, setAtBottom] = useState(false)
 
-    const bottomRef = useRef<HTMLDivElement>(null)
     const topRef = useRef<HTMLDivElement>(null)
+    const bottomRef = useRef<HTMLDivElement>(null)
+    const loaderRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLTableSectionElement>(null)
+
+    const pathname = usePathname().slice(1)
 
     const scrollToBottom = () => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
+
+    /* observing the top div if it is in viewport or not */
+    const topObserver = new IntersectionObserver((entries) => {
+        const loader = loaderRef.current!
+        entries.forEach(async (entry) => {
+            if (entry.isIntersecting) {
+                console.log("In Viewport")
+                loader.style.display = "flex"
+                const lastMessage = topRef.current?.nextSibling as HTMLDivElement
+
+                const data = await fetchMoreMessages(pathname, lastMessage.id)
+
+                loader.style.display = "none"
+                setMessages(prev => [...data.messages, ...prev])
+            } else {
+                console.log("Not In Viewport")
+                loader.style.display = "none"
+            }
+        })
+    })
+
+    /* check if top div is visible and fetch next batch of messages if in view */
+    useEffect(() => {
+        topObserver.observe(topRef.current!)
+    }, [])
 
     /* scroll to bottom of page only on initial load */
     useEffect(() => {
@@ -101,6 +140,13 @@ export default function MessageArea({ setReplying, messages }: Props) {
                     <p className='text-xs text-gray-400'>Be the first to send a message</p>
                 </article>
             )}
+
+            {/* loader for when previous messages are being fetched */}
+            <div ref={loaderRef} className="hidden justify-center items-center gap-3 pt-20 pb-4">
+                <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                <div className='h-2 w-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                <div className='h-2 w-2 bg-white rounded-full animate-bounce'></div>
+            </div>
 
             {/* div always at the top of all messages to reference the top */}
             <div ref={topRef}></div>
