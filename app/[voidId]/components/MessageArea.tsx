@@ -53,10 +53,11 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                 loader.style.display = "flex"
                 const lastMessage = topRef.current?.nextSibling as HTMLDivElement
 
-                const data = await fetchMoreMessages(pathname, lastMessage.id)
+                const { messages, error } = await fetchMoreMessages(pathname, lastMessage.id)
+                if (error) loader.style.display = "none"
 
                 loader.style.display = "none"
-                setMessages(prev => [...data.messages, ...prev])
+                setMessages(prev => [...messages, ...prev])
             } else {
                 console.log("Not In Viewport")
                 loader.style.display = "none"
@@ -142,14 +143,14 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
 
     return (
         <section id="msg-area" ref={containerRef} className='px-5 mb-16 flex flex-col h-full grow overflow-y-scroll'>
-            {!messages.length && (
+            {messages.length === 0 && (
                 <article className='text-center my-auto flex flex-col gap-2'>
                     <p className='font-semibold'>No messages in this void yet</p>
                     <p className='text-xs text-gray-400'>Be the first to send a message</p>
                 </article>
             )}
 
-            {messages.length && (
+            {messages.length !== 0 && (
                 <>
                     {/* loader for when previous messages are being fetched */}
                     <div ref={loaderRef} className="hidden justify-center items-center gap-3 pt-20 pb-4">
@@ -163,7 +164,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                 </>
             )}
 
-            {messages.length && (
+            {messages.length !== 0 && (
                 messages.map((message) => {
                     const replied = messages.find(reply => {
                         return reply.id.toString() === message.replied

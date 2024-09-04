@@ -65,7 +65,7 @@ export async function fetchMoreMessages(voidId: string, lastId: string) {
 
     if (error) throw new Error(error.message)
 
-    return { messages: data.reverse() }
+    return { messages: data.reverse(), error: error }
 }
 
 /* inouts new message lol */

@@ -31,3 +31,12 @@ body {
   scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
   scrollbar-width: thin;
 }
+
+#snap-container {
+  scroll-snap-type: x mandatory;
+}
+
+#recent-stickers,
+#all-stickers {
+  scroll-snap-align: start;
+}

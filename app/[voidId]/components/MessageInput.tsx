@@ -7,12 +7,14 @@ import Image from "next/image"
 import { inputNewMessage } from "@/lib/actions"
 import { inter } from "@/app/ui/fonts"
 import { XMarkIcon, PhotoIcon, ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline"
+import stickerIcon from '@/public/sticker-icon.svg'
 import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
 import uploadMedia from "@/lib/uploadMedia"
 import Loader from "@/app/ui/Loader"
 import notify from "@/app/ui/toast"
+import StickerArea from "./StickerArea"
 
 type Props = {
     replying: number | undefined,
@@ -40,6 +42,9 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     const [preview, setPreview] = useState<string | ArrayBuffer | null>('')
     const [dimensions, setDimensions] = useState<{ width: number, height: number } | null>(null)
     const [uploading, setUploading] = useState(false)
+
+    /* state for sticker area open or not */
+    const [isOpen, setIsOpen] = useState(false)
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const hiddenInputRef = useRef<HTMLInputElement>(null)
@@ -126,7 +131,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     return (
-        <section className='fixed bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
+        <section className='fixed bottom-0 bg-darkBg rounded-t-xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && !replied?.is_media && (
                     <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
@@ -160,6 +165,12 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
 
                 <SendButton message={message} setMessage={setMessage} setReplying={setReplying} formStatus={state} />
             </form>
+
+            {!message && (
+                <button onClick={() => setIsOpen(prev => !prev)} className="px-3.5 py-3 rounded-lg w-fit h-fit self-end border -order-2">
+                    <img src="./sticker-icon.svg" alt="sticker icon" width={24} height={24} />
+                </button>
+            )}
 
             {!message && (
                 <form className='-order-1 relative h-fit self-end'>
@@ -220,6 +231,9 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             {state.status === 'error' && message && (
                 <span className='text-red-600 italic absolute bottom-1 left-5 text-[8px]'>Failed to send message!</span>
             )}
+
+
+            <StickerArea isOpen={isOpen} setIsOpen={setIsOpen} />
         </section>
     )
 }
