@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import supabase from '@/lib/supabase'
 import { useParams } from 'next/navigation'
 import { subscribeToChanges } from '@/lib/SubscribeRealtime'
+import { createStickerStorage } from '@/lib/localStorage'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
 import { Json } from '@/types'
@@ -32,6 +33,8 @@ export default function ChatBody({ messagesArray }: Props) {
     const voidChannel = supabase.channel(voidId as string)
 
     subscribeToChanges(voidChannel, voidId as string, setMessages)
+
+    createStickerStorage()
 
     /* Set message being replied to */
     useEffect(() => {

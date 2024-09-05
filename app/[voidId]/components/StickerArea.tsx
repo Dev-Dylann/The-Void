@@ -4,6 +4,7 @@ import { XMarkIcon, ClockIcon } from "@heroicons/react/24/outline";
 import Link from 'next/link';
 import { inputNewMessage } from '@/lib/actions';
 import notify from '@/app/ui/toast';
+import { getRecentStickers, updateRecentStickers } from '@/lib/localStorage';
 
 type Props = {
     isOpen: boolean;
@@ -23,9 +24,16 @@ function generateArray(start: number) {
 
 export default function StickerArea({ isOpen, setIsOpen, replying, setReplying }: Props) {
     const stickerContainerRef = useRef<HTMLDivElement>(null)
+    const [recentStickers, setRecentStickers] = useState<string[]>([])
     const { voidId } = useParams()
 
     const startArray = generateArray(2)
+
+    useEffect(() => {
+        const recent = getRecentStickers()
+
+        setRecentStickers(recent)
+    }, [])
 
     const loadMoreStickers = () => {
         const stickerContainer = stickerContainerRef.current!
@@ -69,6 +77,10 @@ export default function StickerArea({ isOpen, setIsOpen, replying, setReplying }
             setIsOpen(false)
         }
 
+        const updated = updateRecentStickers(stickerId)!
+        console.log(updated)
+        setRecentStickers(updated)
+
         setReplying(undefined)
         setIsOpen(false)
     }
@@ -93,9 +105,19 @@ export default function StickerArea({ isOpen, setIsOpen, replying, setReplying }
             <div id="snap-container" className="overflow-x-auto scroll-smooth scroll-snap-mandatory">
                 <div className='w-full h-full flex flex-nowrap gap-4 scroll-smooth overflow-y-hidden'>
 
-                    <div id="recent-stickers" className='py-10 h-fit min-w-[calc(100vw_-_40px)] scroll-snap-start text-center flex flex-col gap-2'>
-                        <p className='font-semibold'>No recent stickers</p>
-                        <p className='text-xs text-gray-400'>Use a sticker to add it to your recently used stickers</p>
+                    <div id="recent-stickers" className='min-w-[calc(100vw_-_40px)] scroll-snap-start grid grid-cols-4 gap-4'>
+                        {recentStickers.length > 0 ? (
+                            <>
+                                {recentStickers.map((sticker, index) => (
+                                    <img id={sticker} key={`recent${index}`} onClick={async () => await sendStickerMessage(sticker)} src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + 'void_stickers/stickers/sticker' + sticker + '.webp'} alt={`recent${index}`} width={512} height={512} className="place-content-center" />
+                                ))}
+                            </>
+                        ) : (
+                            <div className='text-center px-10 flex flex-col gap-2 col-span-full'>
+                                <p className='font-semibold'>No recent stickers</p>
+                                <p className='text-xs text-gray-400'>Use a sticker to add it to your recently used stickers</p>
+                            </div>
+                        )}
                     </div>
 
                     <div id='all-stickers' ref={stickerContainerRef} className='min-w-[calc(100vw_-_45px)] scroll-snap-start grid grid-cols-4 gap-4 overflow-y-scroll'>

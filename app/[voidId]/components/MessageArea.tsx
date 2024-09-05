@@ -45,7 +45,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
-    /* observing the top div if it is in viewport or not */
+    /* check if top div is visible and fetch next batch of messages if in view */
     const topObserver = new IntersectionObserver((entries) => {
         const loader = loaderRef.current!
         entries.forEach(async (entry) => {
@@ -66,7 +66,6 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         })
     })
 
-    /* check if top div is visible and fetch next batch of messages if in view */
     useEffect(() => {
         if (topRef.current) topObserver.observe(topRef.current)
     }, [])
@@ -82,7 +81,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         const container = containerRef.current
 
         const checkAtBottom = () => {
-            const awayFromBottom = container?.scrollHeight! - container?.scrollTop! > container?.clientHeight! + 100
+            const awayFromBottom = container?.scrollHeight! - container?.scrollTop! > container?.clientHeight! + 50
 
             setAtBottom(!awayFromBottom)
         }
@@ -178,7 +177,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                         )
                     } else if (message.is_media && messageMedia.type.includes('webp')) {
                         return (
-                            <StickerMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
+                            <StickerMessage key={message.id} message={message} replied={replied ?? undefined} />
                         )
                     } else {
                         <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
