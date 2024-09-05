@@ -150,7 +150,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                         Replying to
                         <div className='flex items-center gap-2 text-white'>
                             <PhotoIcon className='h-6 w-6' />
-                            {repliedMedia.type.includes('image') ? "Image" : "Video"}
+                            {repliedMedia.type.includes('video') ? "Video" : repliedMedia.path.includes('sticker') ? "Sticker" : "Image"}
                         </div>
                     </div>
                 )}
