@@ -7,7 +7,6 @@ import Image from "next/image"
 import { inputNewMessage } from "@/lib/actions"
 import { inter } from "@/app/ui/fonts"
 import { XMarkIcon, PhotoIcon, ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline"
-import stickerIcon from '@/public/sticker-icon.svg'
 import SendButton from "./SendButton"
 import getDimensions from "@/lib/getMediaDimensions"
 import { Json } from "@/types"
@@ -233,7 +232,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
             )}
 
 
-            <StickerArea isOpen={isOpen} setIsOpen={setIsOpen} />
+            <StickerArea isOpen={isOpen} setIsOpen={setIsOpen} replying={replying} setReplying={setReplying} />
         </section>
     )
 }

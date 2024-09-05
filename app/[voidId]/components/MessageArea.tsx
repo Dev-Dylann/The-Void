@@ -7,6 +7,7 @@ import ToBottom from "@/app/components/ToBottom"
 import { Json } from '@/types'
 import MediaMessage from '@/app/ui/MediaMessage'
 import { fetchMoreMessages } from '@/lib/actions'
+import StickerMessage from '@/app/ui/StickerMessage'
 
 type Props = {
     setReplying: React.Dispatch<React.SetStateAction<number | undefined>>,
@@ -169,15 +170,18 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                     const replied = messages.find(reply => {
                         return reply.id.toString() === message.replied
                     })
+                    const messageMedia = message.media as any
 
                     if (!message.is_media) {
                         return (
                             <Message key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
                         )
-                    } else {
+                    } else if (message.is_media && messageMedia.type.includes('webp')) {
                         return (
-                            <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
+                            <StickerMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
                         )
+                    } else {
+                        <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
                     }
                 })
             )}

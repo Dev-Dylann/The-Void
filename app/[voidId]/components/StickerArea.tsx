@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef, createElement } from 'react';
-import supabase from '@/lib/supabase';
-import fetchStickers from '@/lib/fetchStickers';
+import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'next/navigation';
 import { XMarkIcon, ClockIcon } from "@heroicons/react/24/outline";
-import stickerIcon from "@/public/sticker-icon.svg"
 import Link from 'next/link';
-
+import { inputNewMessage } from '@/lib/actions';
+import notify from '@/app/ui/toast';
 
 type Props = {
     isOpen: boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    replying: number | undefined,
+    setReplying: React.Dispatch<React.SetStateAction<number | undefined>>
 }
 
 function generateArray(start: number) {
@@ -20,8 +21,9 @@ function generateArray(start: number) {
     return arr;
 }
 
-export default function StickerArea({ isOpen, setIsOpen }: Props) {
+export default function StickerArea({ isOpen, setIsOpen, replying, setReplying }: Props) {
     const stickerContainerRef = useRef<HTMLDivElement>(null)
+    const { voidId } = useParams()
 
     const startArray = generateArray(2)
 
@@ -40,9 +42,35 @@ export default function StickerArea({ isOpen, setIsOpen }: Props) {
             sticker.alt = `sticker${index}`
             sticker.width = 512
             sticker.width = 512
+            sticker.onclick = async () => await sendStickerMessage(`${el}`)
 
             stickerContainer.appendChild(sticker)
         })
+    }
+
+    const sendStickerMessage = async (stickerId: string) => {
+        const stickerInfo = {
+            path: `sticker${stickerId}.webp`,
+            width: 512,
+            height: 512,
+            type: 'image/webp'
+        }
+
+        const formData = new FormData()
+        formData.append('voidId', voidId as string)
+        formData.append('replied', replying?.toString()!)
+        formData.append('isMedia', '1')
+        formData.append('media', JSON.stringify(stickerInfo))
+
+        const state = await inputNewMessage({ status: '', message: '' }, formData)
+
+        if (state.status === 'error') {
+            notify('error', 'Failed to send sticker')
+            setIsOpen(false)
+        }
+
+        setReplying(undefined)
+        setIsOpen(false)
     }
 
     return (
@@ -78,7 +106,7 @@ export default function StickerArea({ isOpen, setIsOpen }: Props) {
                         </div>
 
                         {startArray.map((el, index) => (
-                            <img id={`${el}`} key={`sticker${index}`} src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + 'void_stickers/stickers/sticker' + el + '.webp'} alt={`sticker${index}`} width={512} height={512} className="place-content-center" />
+                            <img id={`${el}`} key={`sticker${index}`} onClick={async () => await sendStickerMessage(`${el}`)} src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + 'void_stickers/stickers/sticker' + el + '.webp'} alt={`sticker${index}`} width={512} height={512} className="place-content-center" />
                         ))}
                     </div>
                 </div>
