@@ -6,6 +6,10 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .radial-gradient {
+    background: radial-gradient(circle at left, transparent, #101720 70%);
+  }
 }
 
 html {

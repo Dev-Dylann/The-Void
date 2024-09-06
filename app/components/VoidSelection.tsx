@@ -37,7 +37,7 @@ export default function Selection() {
     }
 
     return (
-        <div className="py-6 px-6 flex flex-col gap-4 text-left sm:px-10">
+        <div className="py-6 px-6 flex flex-col gap-4 text-left sm:px-10 lg:hidden">
             {selectionState === 'create'
                 ? (
                     <>
