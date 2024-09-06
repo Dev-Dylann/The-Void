@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <main className='relative row-span-full flex flex-col'>
 
-      <section className='w-full h-full bg-gradient-to-b from-transparent from-10% to-darkBg to-80% p-5 pb-12 flex flex-col justify-end text-center'>
-        <p className={`${montserrat.className} font-semibold text-lg`}>Welcome to</p>
-        <h1 className={`${astro.className} font-semibold text-[65px] -mt-2`}>The Void</h1>
+      <section className='w-full h-full bg-gradient-to-b from-transparent from-10% to-darkBg to-80% p-5 pb-12 flex flex-col justify-end text-center sm:p-10 sm:pb-16'>
+        <p className={`${montserrat.className} font-semibold text-lg sm:text-2xl`}>Welcome to</p>
+        <h1 className={`${astro.className} font-semibold text-[65px] -mt-2 sm:text-[80px]`}>The Void</h1>
 
-        <p className={`${inter.className} text-sm`}>
+        <p className={`${inter.className} text-sm sm:text-lg`}>
           Send messages, images and videos in completely anonymous chatrooms called <span className={`${astro.className}`}>Voids</span>. Only you know which messages you send 😉
         </p>
 
