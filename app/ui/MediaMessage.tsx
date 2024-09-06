@@ -75,7 +75,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
             <div className={!fullscreen ? 'flex items-center gap-2 text-sm overflow-hidden max-h-[40vh] rounded' : 'grow flex justify-center items-center overflow-hidden'} onClick={() => setFullscreen(true)}>
                 {media.type.startsWith('image') ? (
                     <Image
-                        src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path}
+                        src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + "void_media" + media.path}
                         alt={media.path}
                         width={media.width}
                         height={media.height}
@@ -84,7 +84,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
                     ></Image>
                 ) : (
                     <video controls={fullscreen} controlsList="nodownload nofullscreen" className={fullscreen ? 'max-h-full w-fit max-w-full' : ''}>
-                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + media.path} width={media.width} height={media.height} type={media.type} />
+                        <source src={process.env.NEXT_PUBLIC_SUPABASE_BUCKET_URL! + "void_media" + media.path} width={media.width} height={media.height} type={media.type} />
                     </video>
                 )}
             </div>
