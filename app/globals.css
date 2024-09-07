@@ -8,7 +8,11 @@
   }
 
   .radial-gradient {
-    background: radial-gradient(circle at left, transparent, #101720 70%);
+    background: radial-gradient(circle at 50% 20%, transparent, #101720 70%);
+  }
+
+  .radial-gradient-max {
+    background: radial-gradient(circle at 50% 20%, transparent, #101720 65%);
   }
 }
 

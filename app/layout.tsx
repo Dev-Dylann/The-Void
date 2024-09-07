@@ -30,6 +30,8 @@ export default function RootLayout({
   return (
     <html lang="en" className='scroll-smooth'>
       <body className={`${inter.className} bg-darkBg text-white grid grid-rows-[auto,_1fr] relative overflow-hidden`}>
+
+        <div className="fixed h-full w-full top-0 left-0 hidden lg:block radial-gradient xl:radial-gradient-max"></div>
         <Image
           alt='Background'
           src={mobileBg}
