@@ -42,11 +42,11 @@ export default async function VoidRoom({ params }: Props) {
 
     return (
         <>
-            <header className={`${montserrat.className} sticky w-full left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 shadow-lg bg-darkBg rounded-b-xl z-10`}>
+            <header className={`${montserrat.className} sticky w-full left-0 top-0 font-semibold flex items-center justify-between px-4 py-2 shadow-lg bg-darkBg rounded-b-xl z-10 sm:px-8`}>
                 <Link href='/' className='p-2 rounded-lg'>
-                    <ArrowLeftIcon className='h-5 w-5' />
+                    <ArrowLeftIcon className='h-5 w-5 md:h-7 md:w-7' />
                 </Link>
-                <h1>{voidName}</h1>
+                <h1 className='sm:text-lg'>{voidName}</h1>
                 <ShareButton voidName={voidName} voidId={voidId} />
             </header>
 

@@ -27,7 +27,7 @@ export default function SendButton({ message, setMessage, setReplying, formStatu
 
     return (
         <button disabled={pending || !message} className='p-3 rounded-lg text-darkBg bg-white w-fit disabled:brightness-75'>
-            {pending ? <Loader /> : <PaperAirplaneIcon className='h-5 w-5' />}
+            {pending ? <Loader /> : <PaperAirplaneIcon className='h-5 w-5 md:h-7 md:w-7' />}
         </button>
     )
 }

@@ -29,7 +29,7 @@ export default function ShareButton({ voidName, voidId }: Props) {
 
     return (
         <button className='p-2 rounded-lg' onClick={() => shareVoid(voidName, voidId)}>
-            <ShareIcon className='h-5 w-5' />
+            <ShareIcon className='h-5 w-5 md:h-7 md:w-7' />
         </button>
     )
 }
