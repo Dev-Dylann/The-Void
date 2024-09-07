@@ -129,19 +129,19 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
         <section className='fixed bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10 sm:px-5 sm:py-4 sm:rounded-t-3xl lg:hidden'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && !replied?.is_media && (
-                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
+                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg sm:text-sm'>
                         <button type="button" onClick={() => setReplying(undefined)}>
-                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
+                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2 sm:h-6 sm:w-6' />
                         </button>
                         Replying to
-                        <pre className={`${inter.className} text-white line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied?.message}</pre>
+                        <pre className={`${inter.className} text-white line-clamp-3 text-wrap text-ellipsis`}>{replied?.message}</pre>
                     </div>
                 )}
 
                 {replying && replied?.is_media && (
-                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
+                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg sm:text-sm'>
                         <button type="button" onClick={() => setReplying(undefined)}>
-                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
+                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2 sm:h-6 sm:w-6' />
                         </button>
                         Replying to
                         <div className='flex items-center gap-2 text-white'>

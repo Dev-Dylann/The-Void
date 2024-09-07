@@ -141,7 +141,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
     }, [setReplying])
 
     return (
-        <section id="msg-area" ref={containerRef} className='px-5 mb-16 flex flex-col h-full grow overflow-y-scroll sm:px-8 lg:hidden'>
+        <section id="msg-area" ref={containerRef} className='px-5 mb-16 flex flex-col h-full grow overflow-y-scroll sm:px-8 sm:mb-24 lg:hidden'>
             {messages.length === 0 && (
                 <article className='text-center my-auto flex flex-col gap-2'>
                     <p className='font-semibold sm:text-xl'>No messages in this void yet</p>

@@ -44,7 +44,7 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
     const repliedMedia = replied?.media as any
 
     return (
-        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className={!fullscreen ? `border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[75vw] scroll-mt-40 backdrop-blur message transition-all` : `fixed top-0 left-0 w-full h-full z-[11] backdrop-blur transition-all scroll-mt-40 flex flex-col gap-4 px-5 py-8`}>
+        <div id={`${message.id}`} /* onDoubleClick={() => replyActive(message.id)} */ className={!fullscreen ? `border rounded-lg p-2 my-1 flex flex-col gap-1 w-fit max-w-[75vw] scroll-mt-40 backdrop-blur message transition-all sm:max-w-[60vw]` : `fixed top-0 left-0 w-full h-full z-[11] backdrop-blur transition-all scroll-mt-40 flex flex-col gap-4 px-5 py-8`}>
 
             {fullscreen && (
                 <>
@@ -61,13 +61,13 @@ export default function MediaMessage({ message, replied, setReplying }: Props) {
 
             {replied && !replied.is_media && (
                 <Link href={`#${replied.id}`}>
-                    <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied.message}</pre>
+                    <pre className={`${inter.className} p-2 border rounded line-clamp-3 text-xs text-wrap text-ellipsis sm:text-sm`}>{replied.message}</pre>
                 </Link>
             )}
 
             {replied && replied.is_media && (
-                <Link href={`#${replied.id}`} className='text-xs flex items-center gap-2 p-2 border rounded'>
-                    <PhotoIcon className='h-5 w-5' />
+                <Link href={`#${replied.id}`} className='text-xs flex items-center gap-2 p-2 border rounded sm:text-sm'>
+                    <PhotoIcon className='h-5 w-5 md:w-7 md:h-7' />
                     {repliedMedia.type.includes('image') ? "Image" : "Video"}
                 </Link>
             )}
