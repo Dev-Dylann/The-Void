@@ -130,22 +130,22 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
     }
 
     return (
-        <section className='fixed bottom-0 bg-darkBg rounded-t-xl flex-end w-full py-2 px-3 flex gap-2 z-10'>
+        <section className='fixed bottom-0 bg-darkBg rounded-t-2xl flex-end w-full py-2 px-3 flex gap-2 z-10 sm:px-5 sm:py-4 sm:rounded-t-3xl lg:hidden'>
             <form action={formAction} className="grid grid-cols-[1fr_auto] w-full gap-2">
                 {replying && !replied?.is_media && (
-                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
+                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg sm:text-sm'>
                         <button type="button" onClick={() => setReplying(undefined)}>
-                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
+                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2 sm:h-6 sm:w-6' />
                         </button>
                         Replying to
-                        <pre className={`${inter.className} text-white line-clamp-3 text-xs text-wrap text-ellipsis`}>{replied?.message}</pre>
+                        <pre className={`${inter.className} text-white line-clamp-3 text-wrap text-ellipsis`}>{replied?.message}</pre>
                     </div>
                 )}
 
                 {replying && replied?.is_media && (
-                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg'>
+                    <div className='relative p-2 flex flex-col gap-1 text-xs col-span-full text-gray-500 border rounded-lg sm:text-sm'>
                         <button type="button" onClick={() => setReplying(undefined)}>
-                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2' />
+                            <XMarkIcon className='h-4 w-4 absolute top-2 right-2 sm:h-6 sm:w-6' />
                         </button>
                         Replying to
                         <div className='flex items-center gap-2 text-white'>
@@ -158,7 +158,7 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                 <label htmlFor="message" className='absolute -left-[999px]'>
                     Type your message here
                 </label>
-                <textarea name="message" rows={1} id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 h-fit self-center px-4 outline outline-2 focus:outline-white -outline-offset-2 grow resize-none' />
+                <textarea name="message" rows={1} id="message" autoComplete="off" placeholder='Type your message here' value={message} onChange={(e) => setMessage(e.target.value)} className='text-sm bg-transparent outline-none rounded-lg py-2 h-fit self-center px-4 outline outline-2 focus:outline-white -outline-offset-2 grow resize-none sm:text-base' />
                 <input type="hidden" name="voidId" value={voidId} />
                 <input type="hidden" name="replied" ref={hiddenInputRef} />
 
@@ -182,11 +182,11 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                     <input type="hidden" name="replied" value={replied?.id.toString()} />
 
                     <div className='p-3 rounded-lg w-fit border'>
-                        <PhotoIcon className='h-5 w-5' />
+                        <PhotoIcon className='h-5 w-5 md:w-7 md:h-7' />
                     </div>
 
                     {media && preview && dimensions && (
-                        <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4'>
+                        <div className='fixed top-0 left-0 w-full h-full backdrop-blur px-5 py-8 flex flex-col gap-4 sm:px-10 sm:pb-16'>
                             <button type="button" onClick={nullMedia} className='p-2 rounded-lg border w-fit'>
                                 <ArrowLeftIcon className='h-5 w-5' />
                             </button>
@@ -209,10 +209,10 @@ export default function MessageInput({ replying, setReplying, replied }: Props) 
                                 )}
                             </div>
 
-                            <button disabled={uploading} onClick={async () => await uploadMediaAndUpdateMessages()} type="button" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold disabled:brightness-75'>
+                            <button disabled={uploading} onClick={async () => await uploadMediaAndUpdateMessages()} type="button" className='bg-white text-darkBg rounded-lg self-center py-2 px-5 w-fit flex gap-2 font-semibold disabled:brightness-75 sm:text-lg'>
                                 {!uploading ? (
                                     <>
-                                        <PaperAirplaneIcon className='h-5 w-5' />
+                                        <PaperAirplaneIcon className='h-5 w-5 md:h-7 md:w-7' />
                                         Send
                                     </>
                                 ) : (

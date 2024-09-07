@@ -29,7 +29,7 @@ export default function Selection() {
 
     function BackButton() {
         return (
-            <button onClick={() => setSelectionState('home')} className={`${montserrat.className} text-base font-semibold border p-2 rounded-lg flex justify-center gap-2`}>
+            <button onClick={() => setSelectionState('home')} className={`${montserrat.className} text-base font-semibold border p-2 rounded-lg flex justify-center gap-2 sm:text-xl`}>
                 <ArrowLeftIcon className='h-5 w-5' />
                 Back
             </button>
@@ -37,7 +37,7 @@ export default function Selection() {
     }
 
     return (
-        <div className="py-6 px-6 flex flex-col gap-4 text-left">
+        <div className="py-6 px-6 flex flex-col gap-4 text-left sm:px-10 lg:hidden">
             {selectionState === 'create'
                 ? (
                     <>

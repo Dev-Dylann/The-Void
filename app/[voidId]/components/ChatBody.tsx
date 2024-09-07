@@ -8,6 +8,7 @@ import { createStickerStorage } from '@/lib/localStorage'
 import MessageArea from './MessageArea'
 import MessageInput from './MessageInput'
 import { Json } from '@/types'
+import DesktopWarning from './DesktopWarning'
 
 type Message = {
     id: number;
@@ -54,6 +55,8 @@ export default function ChatBody({ messagesArray }: Props) {
             <MessageArea setReplying={setReplying} messages={messages} setMessages={setMessages} />
 
             <MessageInput replying={replying} setReplying={setReplying} replied={replied} />
+
+            <DesktopWarning />
         </>
     )
 }
