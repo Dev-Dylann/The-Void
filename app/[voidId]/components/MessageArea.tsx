@@ -66,14 +66,15 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         })
     })
 
-    useEffect(() => {
-        if (topRef.current) topObserver.observe(topRef.current)
-    }, [])
-
-    /* scroll to bottom of page only on initial load */
+    /* scroll to bottom of page only on initial load and then start observing top div */
     useEffect(() => {
         scrollToBottom()
         console.log(messages)
+
+        // delaying the observation so that the scroll to bottom is completed first before observation starts
+        setTimeout(() => {
+            if (topRef.current) topObserver.observe(topRef.current)
+        }, 1000)
     }, [])
 
     /* toggle scroll to bottom button visibility based on how much user has scrolled from bottom of component */
