@@ -44,7 +44,7 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
     }
 
-    /* observing the top div if it is in viewport or not */
+    /* check if top div is visible and fetch next batch of messages if in view */
     const topObserver = new IntersectionObserver((entries) => {
         const loader = loaderRef.current!
         entries.forEach(async (entry) => {
@@ -64,15 +64,15 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         })
     })
 
-    /* check if top div is visible and fetch next batch of messages if in view */
-    useEffect(() => {
-        if (topRef.current) topObserver.observe(topRef.current)
-    }, [])
-
-    /* scroll to bottom of page only on initial load */
+    /* scroll to bottom of page only on initial load and then start observing top div */
     useEffect(() => {
         scrollToBottom()
         console.log(messages)
+
+        // delaying the observation so that the scroll to bottom is completed first before observation starts
+        setTimeout(() => {
+            if (topRef.current) topObserver.observe(topRef.current)
+        }, 1000)
     }, [])
 
     /* toggle scroll to bottom button visibility based on how much user has scrolled from bottom of component */
