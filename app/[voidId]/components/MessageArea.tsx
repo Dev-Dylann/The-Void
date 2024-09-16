@@ -142,6 +142,10 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
         }
     }, [setReplying])
 
+    useEffect(() => {
+        console.log(messages)
+    }, [messages])
+
     return (
         <section id="msg-area" ref={containerRef} className='px-5 mb-16 flex flex-col h-full grow overflow-y-scroll sm:px-8 sm:mb-24 lg:hidden'>
             {messages.length === 0 && (
@@ -181,7 +185,9 @@ export default function MessageArea({ setReplying, messages, setMessages }: Prop
                             <StickerMessage key={message.id} message={message} replied={replied ?? undefined} />
                         )
                     } else {
-                        <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
+                        return (
+                            <MediaMessage key={message.id} message={message} replied={replied ?? undefined} setReplying={setReplying} />
+                        )
                     }
                 })
             )}
